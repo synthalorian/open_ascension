@@ -7,7 +7,7 @@ This file tracks what's done and what needs to happen next. Any session should r
 ## Completed ✅
 
 - [x] Flutter project scaffold (Flutter 3.41.9, Riverpod, go_router)
-- [x] Data models with JSON serialization: WarClass (9), Race (11), Ability (170+), Talent (195), MysticEnchant (19), Build, Realm (6), LoreEntry (6)
+- [x] Data models with JSON serialization: WarClass (9), Race (11), Ability (170+), Talent (195), MysticEnchant (19), Build, Realm (6), LoreEntry (41)
 - [x] App navigation (8 routes: home, class, talents/:classId/:spec, enchants, builds, lore, lore/:entryId, settings)
 - [x] Theme system (11 themes: 3 core + 4 synthwave + 4 lore) with SharedPreferences persistence
 - [x] HomeScreen with quick-access cards
@@ -15,50 +15,40 @@ This file tracks what's done and what needs to happen next. Any session should r
 - [x] TalentTreeScreen with spec tabs, point tracking, tier grouping
 - [x] MysticEnchantScreen with slot tabs, tier colors, detail bottom sheets
 - [x] BuildManagerScreen with save/edit/delete
-- [x] LoreScreen with category tabs and search
+- [x] LoreScreen with category tabs and search (41 entries across 6 categories)
 - [x] LoreEntryScreen with related entries navigation
 - [x] SettingsScreen with theme grid selector, data export/import/clear
 - [x] AppDatabase with SharedPreferences persistence for builds
 - [x] **ALL 30 analyzer issues fixed** — zero warnings, zero errors
 - [x] Clean build (Linux desktop binary at build/linux/x64/debug/bundle/open_ascension)
-- [x] **All 195 talents across all 9 classes × 3 specs** (Warrior 27, Paladin 24, Hunter 25, Rogue 22, Priest 21, Death Knight 20, Shaman 19, Mage 17, Warlock 20)
-- [x] Git initialized, initial commit made (115 files)
+- [x] **All 195 talents across all 9 classes × 3 specs**
+- [x] **Full Stats tab** with WotLK formulas, per-class default stats, racial bonuses, categorized display
+- [x] Git initialized, 3 commits (initial + talents + lore/stats)
 - [x] README.md written
 - [x] Research data collected from ascension.gg wiki
+- [x] NEXT_STEPS.md roadmap created
 
 ---
 
 ## Priority 1: Data Completeness
 
-The app works and ALL classes now have talent data — but there's still room to expand.
+The app now has comprehensive talent and lore data. Remaining gaps in depth.
 
 ### Talents — Deepen Existing Trees
 
-All 27 specs have core talents. Next: fill out full 7-tier trees to match WoW density.
-
-**Current state:** 195 talents across 9 classes. Target: ~300-350 for full WotLK trees (~7 tiers × ~4-5 talents × 27 specs).
+**Current state:** 195 talents across 9 classes × 3 specs. Target: ~300-350 for full WotLK density.
 
 ### Abilities — Expand Per Class
 
 Current: ~170 abilities but unevenly distributed.
-- Each class should have 15-30 core abilities
-- Include: racials, passives, stances/forms
 
 ### Mystic Enchants — Expand
 
 Current: 19 enchants. Need 40-60 total.
-- More Weapon/Main Hand/Off Hand enchants per tier
-- More stat boosts, proc effects, class-specific enchants
 
-### Lore Entries — Expand Dramatically
+### Lore Entries
 
-Current: 6 entries. Need 30-50+.
-- Timeline (10+): Creation, Titans, War of Ancients, Sundering, Dark Portal, First/Second/Third War, TBC, WotLK
-- Characters (15+): Arthas, Illidan, Thrall, Jaina, etc.
-- Factions (5+): Alliance, Horde, Burning Legion, etc.
-- Locations (10+): All continents, major zones
-- Ascension-specific (5+): Server history, custom content
-- Items (5+): Frostmourne, Thunderfury, etc.
+Current: 41 entries across 6 categories. Well-populated but can add more niche characters, locations, and Ascension-specific content.
 
 ---
 
