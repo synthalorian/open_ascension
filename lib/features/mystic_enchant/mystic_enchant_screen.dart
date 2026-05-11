@@ -14,14 +14,13 @@ class _MysticEnchantScreenState extends State<MysticEnchantScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   String _searchQuery = '';
-  final Map<String, MysticEnchant> _selectedEnchants = {};
-  final Map<String, int> _enchantPoints = {};
+  final Set<String> _selectedEnchantIds = {};
+  late final List<EnchantTier> _tiers = EnchantTier.values;
 
   @override
   void initState() {
     super.initState();
-    _tabController =
-        TabController(length: EnchantSlot.values.length, vsync: this);
+    _tabController = TabController(length: _tiers.length, vsync: this);
   }
 
   @override
@@ -30,7 +29,17 @@ class _MysticEnchantScreenState extends State<MysticEnchantScreen>
     super.dispose();
   }
 
-  int get _totalPoints => _enchantPoints.values.fold(0, (a, b) => a + b);
+  int get _totalSelected => _selectedEnchantIds.length;
+
+  List<MysticEnchant> _filteredEnchants(EnchantTier tier) {
+    return sampleEnchants.where((e) {
+      if (e.tier != tier) return false;
+      if (_searchQuery.isEmpty) return true;
+      final q = _searchQuery.toLowerCase();
+      return e.name.toLowerCase().contains(q) ||
+          e.description.toLowerCase().contains(q);
+    }).toList()..sort((a, b) => a.name.compareTo(b.name));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,120 +49,49 @@ class _MysticEnchantScreenState extends State<MysticEnchantScreen>
       appBar: AppBar(
         title: const Text('Mystic Enchants'),
         actions: [
-          if (_selectedEnchants.isNotEmpty)
+          if (_totalSelected > 0)
             TextButton.icon(
               onPressed: () => _saveEnchantBuild(context),
               icon: const Icon(Icons.save),
-              label: const Text('Save Build'),
+              label: Text('Save ($_totalSelected)'),
             ),
         ],
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
-          tabs: EnchantSlot.values.map((s) => Tab(text: s.displayName)).toList(),
+          tabs: EnchantTier.values.map((t) => Tab(
+            text: '${t.displayName} (${sampleEnchants.where((e) => e.tier == t).length})'
+          )).toList(),
+          indicatorColor: EnchantTier.values[_tabController.index].color,
         ),
       ),
       body: Column(
         children: [
-          _buildSelectionSummary(context),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: TextField(
-              decoration: const InputDecoration(
-                hintText: 'Search enchants...',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (v) => setState(() => _searchQuery = v),
-            ),
-          ),
+          _buildSearchBar(context),
+          if (_totalSelected > 0) _buildSelectionSummary(context),
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: EnchantSlot.values.map((slot) {
-                final enchants = sampleEnchants
-                    .where((e) => e.slot == slot)
-                    .where((e) =>
-                        _searchQuery.isEmpty ||
-                        e.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-                        e.description.toLowerCase().contains(_searchQuery.toLowerCase()))
-                    .toList();
-
-                final tiers = <EnchantTier, List<MysticEnchant>>{};
-                for (final e in enchants) {
-                  tiers.putIfAbsent(e.tier, () => []).add(e);
-                }
-                final tierKeys = tiers.keys.toList()
-                  ..sort((a, b) => a.index.compareTo(b.index));
-
-                return ListView(
-                  padding: const EdgeInsets.all(16),
-                  children: [
-                    if (enchants.isEmpty)
-                      const Center(child: Text('No enchants found for this slot')),
-                    ...tierKeys.expand((tier) {
-                      return [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8, bottom: 4),
-                          child: Row(
-                            children: [
-                              Icon(Icons.star, color: tier.color, size: 16),
-                              const SizedBox(width: 4),
-                              Text('Tier ${tier.displayName}',
-                                  style: theme.textTheme.titleSmall?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: tier.color)),
-                              const Spacer(),
-                              Text('+${_getPointsForTier(tier)} pts',
-                                  style: theme.textTheme.labelSmall?.copyWith(
-                                      color: tier.color)),
-                            ],
-                          ),
-                        ),
-                        ...tiers[tier]!.map((e) {
-                          final isSelected = _selectedEnchants[e.slot.name]?.id == e.id;
-                          return Card(
-                            color: isSelected
-                                ? tier.color.withValues(alpha: 0.3)
-                                : null,
-                            child: ListTile(
-                              title: Text(e.name,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: tier.color)),
-                              subtitle: Text(e.description),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                      '${_getPointsForTier(e.tier)} pts',
-                                      style: theme.textTheme.labelSmall?.copyWith(
-                                          color: theme.hintColor)),
-                                  const SizedBox(width: 8),
-                                  Icon(
-                                    isSelected
-                                        ? Icons.check_circle
-                                        : Icons.circle_outlined,
-                                    color: isSelected ? tier.color : theme.hintColor,
-                                  ),
-                                ],
-                              ),
-                              onTap: () => setState(() {
-                                if (isSelected) {
-                                  _removeEnchant(e.slot.name);
-                                } else {
-                                  _selectedEnchants[e.slot.name] = e;
-                                  _enchantPoints[e.slot.name] =
-                                      _getPointsForTier(e.tier);
-                                }
-                              }),
-                            ),
-                        );
-                        }),
-                        const Divider(),
-                      ];
-                    }),
-                  ],
+              children: EnchantTier.values.map((tier) {
+                final enchants = _filteredEnchants(tier);
+        return ListView.builder(
+          padding: const EdgeInsets.all(12),
+          itemCount: enchants.length,
+                  itemBuilder: (context, i) {
+                    final e = enchants[i];
+                    final isSelected = _selectedEnchantIds.contains(e.id);
+                    return SelectionCard(enchant: e, isSelected: isSelected, theme: theme,
+                        onToggle: () {
+                          setState(() {
+                            if (isSelected) {
+                              _selectedEnchantIds.remove(e.id);
+                            } else {
+                              _selectedEnchantIds.add(e.id);
+                            }
+                          });
+                        },
+                      );
+                  },
                 );
               }).toList(),
             ),
@@ -163,130 +101,122 @@ class _MysticEnchantScreenState extends State<MysticEnchantScreen>
     );
   }
 
-  Widget _buildSelectionSummary(BuildContext context) {
-    final selectedEnchants = _selectedEnchants.values.toList();
-    if (selectedEnchants.isEmpty) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-        color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        child: Row(
-          children: [
-            const Icon(Icons.star_outline, size: 18),
-            const SizedBox(width: 8),
-            Text('Tap enchants to select across slots',
-                style: Theme.of(context).textTheme.bodySmall),
-          ],
+  Widget _buildSearchBar(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      child: TextField(
+        decoration: const InputDecoration(
+          hintText: 'Search mystical enchants...',
+          prefixIcon: Icon(Icons.search),
+          border: OutlineInputBorder(),
+          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 12),
         ),
-      );
+        onChanged: (v) => setState(() => _searchQuery = v),
+      ),
+    );
+  }
+
+  Widget _buildSelectionSummary(BuildContext context) {
+    final selected = _selectedEnchantIds
+        .map((id) => sampleEnchants.firstWhere((e) => e.id == id))
+        .toList();
+    final tierGroups = <EnchantTier, List<MysticEnchant>>{};
+    for (final e in selected) {
+      tierGroups.putIfAbsent(e.tier, () => []).add(e);
     }
 
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.8),
-        border: Border(
-            bottom: BorderSide(
-                color: Theme.of(context).dividerColor.withValues(alpha: 0.3))),
+        color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.5),
+        border: Border(bottom: BorderSide(
+            color: Theme.of(context).dividerColor.withValues(alpha: 0.3))),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(Icons.inventory_2, size: 18),
+              const Icon(Icons.star, size: 16),
               const SizedBox(width: 8),
-              Text('Selected (${_selectedEnchants.length} enchant${_selectedEnchants.length == 1 ? '' : 's'}, $_totalPoints pts)',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold)),
+              Text('$_totalSelected selected',
+                  style: Theme.of(context).textTheme.titleSmall
+                      ?.copyWith(fontWeight: FontWeight.bold)),
               const Spacer(),
-              if (_selectedEnchants.isNotEmpty)
-                TextButton(
-                  onPressed: () => setState(() {
-                    _selectedEnchants.clear();
-                    _enchantPoints.clear();
-                  }),
-                  child: const Text('Clear'),
-                ),
+              TextButton.icon(
+                onPressed: () => setState(() {
+                  _selectedEnchantIds.clear();
+                }),
+                icon: const Icon(Icons.clear_all, size: 16),
+                label: const Text('Clear'),
+              ),
             ],
           ),
-          const SizedBox(height: 4),
-          ..._selectedEnchants.entries.map((entry) {
-            final slotName = entry.key;
-            final enchant = entry.value;
-            final tierColor = enchant.tier.color;
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 80,
-                    child: Text(slotName,
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            fontWeight: FontWeight.w600)),
-                  ),
-                  Icon(Icons.star, color: tierColor, size: 14),
-                  const SizedBox(width: 4),
-                  Expanded(
-                    child: Text(enchant.name,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: tierColor, fontWeight: FontWeight.w500)),
-                  ),
-                  Text('${_getPointsForTier(enchant.tier)} pts',
-                      style: Theme.of(context).textTheme.labelSmall),
-                  IconButton(
-                    icon: const Icon(Icons.close, size: 16),
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                    onPressed: () => setState(() => _removeEnchant(slotName)),
-                  ),
-                ],
-              ),
-            );
-          }),
+          for (final tier in EnchantTier.values)
+            if (tierGroups.containsKey(tier))
+              Text('${tierGroups[tier]!.map((e) => e.name).join(' • ')}',
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.labelSmall
+                      ?.copyWith(color: tier.color)),
         ],
       ),
     );
   }
 
-  void _removeEnchant(String slotName) {
-    _selectedEnchants.remove(slotName);
-    _enchantPoints.remove(slotName);
-  }
-
   void _saveEnchantBuild(BuildContext context) {
     final build = Build(
       id: 'build_enchant_${DateTime.now().millisecondsSinceEpoch}',
-      name: 'Enchant Build (${_selectedEnchants.length} enchants)',
+      name: 'Enchant Build ($_totalSelected ME)',
       classId: 'warrior',
       specName: null,
       raceId: null,
       abilityIds: const [],
       talentIds: const [],
       enchantSlots: {
-        for (final entry in _selectedEnchants.entries)
-          entry.key: entry.value.id,
+        for (final id in _selectedEnchantIds) 'me': id,
       },
-      notes: 'Created in Mystic Enchant screen: ${_selectedEnchants.length} enchants selected, $_totalPoints total points',
+      notes: 'Created in Mystic Enchant screen: $_totalSelected ME selected',
       createdAt: DateTime.now(),
     );
     AppDatabase.saveBuild(build);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Enchant build saved with ${_selectedEnchants.length} enchants!'),
+      content: Text('Build saved with $_totalSelected mystic enchants!'),
     ));
   }
+}
 
-  int _getPointsForTier(EnchantTier tier) {
-    switch (tier) {
-      case EnchantTier.common:
-        return 5;
-      case EnchantTier.uncommon:
-        return 10;
-      case EnchantTier.rare:
-        return 15;
-      case EnchantTier.epic:
-        return 20;
-      case EnchantTier.legendary:
-        return 30;
-    }
+class SelectionCard extends StatelessWidget {
+  final MysticEnchant enchant;
+  final bool isSelected;
+  final ThemeData theme;
+  final VoidCallback onToggle;
+
+  const SelectionCard({
+    super.key, required this.enchant, required this.isSelected,
+    required this.theme, required this.onToggle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final c = enchant.tier.color;
+    return Card(
+      margin: const EdgeInsets.only(bottom: 8),
+      color: isSelected ? c.withValues(alpha: 0.2) : null,
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: c.withValues(alpha: 0.3),
+          child: Icon(Icons.auto_awesome, color: c, size: 18),
+        ),
+        title: Text(enchant.name,
+            style: TextStyle(fontWeight: FontWeight.bold, color: c)),
+        subtitle: Text(enchant.description,
+            maxLines: 3, overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.bodySmall),
+        trailing: Icon(isSelected ? Icons.check_circle : Icons.circle_outlined,
+            color: isSelected ? c : theme.hintColor),
+        onTap: onToggle,
+      ),
+    );
   }
 }
