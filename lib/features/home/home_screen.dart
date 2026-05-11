@@ -119,6 +119,13 @@ class HomeScreen extends ConsumerWidget {
                     onTap: () => context.push('/realms'),
                   ).animate().fadeIn(delay: 550.ms),
                   _QuickCard(
+                    title: 'Gear',
+                    subtitle: 'Item database browser',
+                    icon: Icons.inventory_2,
+                    color: theme.colorScheme.primary,
+                    onTap: () => context.push('/gear'),
+                  ).animate().fadeIn(delay: 575.ms),
+                  _QuickCard(
                     title: 'Settings',
                     subtitle: 'Themes, data, about',
                     icon: Icons.settings,

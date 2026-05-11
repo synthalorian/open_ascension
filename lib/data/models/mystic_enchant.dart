@@ -85,6 +85,10 @@ class MysticEnchant {
 }
 
 const sampleEnchants = <MysticEnchant>[
+  // TODO: These placeholder enchants need to be replaced with real Ascension.gg mystical enchant data.
+  // Real mystical enchants change how abilities work (e.g. "Arcane Missiles on every auto attack",
+  // "Chain Lightning on spell cast", "Shadow Bolt on hit"), NOT stat boosts.
+  
   // Weapon enchants
   MysticEnchant(id: 'w_might', name: 'Might of the Titans',
       description: '+40 Attack Power', slot: EnchantSlot.weapon,

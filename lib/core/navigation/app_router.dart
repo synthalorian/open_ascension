@@ -9,6 +9,7 @@ import '../../features/lore/lore_screen.dart';
 import '../../features/lore/lore_entry_screen.dart';
 import '../../features/realms/realm_browser_screen.dart';
 import '../../features/settings/settings_screen.dart';
+import '../../features/gear/gear_browser_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -67,6 +68,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/realms',
       pageBuilder: (context, state) => _fadePage(const RealmBrowserScreen(), state),
+    ),
+    GoRoute(
+      path: '/gear',
+      pageBuilder: (context, state) => _fadePage(const GearBrowserScreen(), state),
     ),
   ],
 );

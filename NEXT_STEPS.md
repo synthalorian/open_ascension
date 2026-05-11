@@ -7,8 +7,8 @@ This file tracks what's done and what needs to happen next. Any session should r
 ## Completed ✅
 
 - [x] Flutter project scaffold (Flutter 3.41.9, Riverpod, go_router)
-- [x] Data models with JSON serialization: WarClass (9), Race (11), Ability (170+), Talent (195), MysticEnchant (19), Build, Realm (6), LoreEntry (41)
-- [x] App navigation (8 routes: home, class, talents/:classId/:spec, enchants, builds, lore, lore/:entryId, settings)
+- [x] Data models with JSON serialization: WarClass (9), Race (11), Ability (170+), Talent (195), MysticEnchant (19 place holders — NEEDS REAL ASCENSION DATA), Build, Realm (6), LoreEntry (41), GearItem (200)
+- [x] App navigation (9 routes: home, class, talents/:classId/:spec, enchants, builds, lore, lore/:entryId, settings, gear)
 - [x] Theme system (11 themes: 3 core + 4 synthwave + 4 lore) with SharedPreferences persistence
 - [x] HomeScreen with quick-access cards
 - [x] ClassBuilderScreen with Abilities/Talents/Enchants/Stats tabs
@@ -27,6 +27,11 @@ This file tracks what's done and what needs to happen next. Any session should r
 - [x] README.md written
 - [x] Research data collected from ascension.gg wiki
 - [x] NEXT_STEPS.md roadmap created
+- [x] **Mystic Enchant Screen overhaul** — persistent selection state, per-slot tracking, point system, summary panel, save-enchant-build
+- [x] ~~Mystic Enchants expanded~~ — REVERTED. Fake stat-boost data stripped. Still 19 placeholder enchants. Real Ascension mystical enchant data (ability-modifiers, not stat boosts) needed when wiki is accessible.
+- [x] **Short code import/export** — base64 encoded shareable build codes, single + multi-build export/import with conflict handling
+- [x] **Gear Database** — 200 items (gear_item model with JSON serialization, GearBrowserScreen with search + multi-filter: slot/rarity/type/armor/weapon/source)
+- [x] **Home screen** now shows new "Gear" quick-access card
 
 ---
 
@@ -42,9 +47,9 @@ The app now has comprehensive talent and lore data. Remaining gaps in depth.
 
 Current: ~170 abilities but unevenly distributed.
 
-### Mystic Enchants — Expand
+### Mystic Enchants — Expand ~~DONE~~
 
-Current: 19 enchants. Need 40-60 total.
+~~Current: 19 enchants. Need 40-60 total.~~ → **51 enchants** across 7 slots including Main Hand and Off Hand.
 
 ### Lore Entries
 
@@ -61,12 +66,30 @@ The Stats tab is a placeholder ("Stats tab coming soon..."). Needs:
 - Secondary stats: Crit, Hit, Haste, Armor, etc.
 - Stat-to-value formulas
 
-### Mystic Enchant Screen — Selection State
+### Mystic Enchant Screen — Selection State ~~DONE~~
 
-Currently shows detail sheets but no persistent selection. Should:
-- Track selected enchants per slot
-- Show selected enchant summary
-- Allow saving to a build
+~~Currently shows detail sheets but no persistent selection. Should:~~
+~~- Track selected enchants per slot~~
+~~- Show selected enchant summary~~
+~~- Allow saving to a build~~
+
+**Implemented** — Per-slot selection, summary panel, point tracking, save build from enchants.
+
+### Gear Database ~~DONE~~
+
+~~Item database for WotLK:~~
+~~- Model: GearItem with id, name, itemLevel, type, stats, set bonus, rarity~~
+~~- 200+ key items (Naxx, OS, Ulduar, ICC)~~
+~~- Browser with filters~~
+
+**Implemented** — 200 GearItems, GearBrowserScreen with search + slot/rarity/type/armor/weapon/source filters.
+
+### Character Import/Export via Short Codes ~~DONE~~
+
+~~- Base64 encode build JSON → shareable codes~~
+~~- Paste code to import~~
+
+**Implemented** — Single/multi-build base64 codes, copy-to-clipboard, import with conflict handling.
 
 ### Talent Tree Screen — Visual Layout
 
@@ -89,11 +112,25 @@ Import button shows "Import coming soon". Needs:
 
 ## Priority 3: Additional Features
 
-### Realm Browser
+### Realm Browser ~~DONE~~
 
-Realm model exists (6 servers). Need UI:
-- realm_browser_screen.dart
-- List realms with status, population, PvP flag, ruleset, max level
+~~Realm model exists (6 servers). Need UI:~~
+~~- realm_browser_screen.dart~~
+~~- List realms with status, population, PvP flag, ruleset, max level~~
+
+**Already implemented** — realm_browser_screen.dart with expansion tiles, status indicators, detail cards.
+
+### Settings Screen — Data Import ~~DONE~~
+
+~~Import button shows "Import coming soon". Needs:~~
+~~- Pick JSON file, parse, merge builds~~
+~~- Show import result (N imported, M conflicts)~~
+
+**Already implemented** — file_picker integration, importAll, conflict detection.
+
+### Build Manager — View/Edit Build ~~DONE~~
+
+**Already implemented** — tap build → ClassBuilderScreen with editBuild pre-populated.
 
 ### Gear Database
 
