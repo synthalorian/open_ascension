@@ -1,0 +1,56 @@
+name: open_ascension
+description: "The ultimate Project Ascension companion app"
+publish_to: 'none'
+
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  
+  # State management
+  flutter_riverpod: ^2.6.1
+  
+  # Persistence
+  shared_preferences: ^2.5.2
+  
+  # Serialization
+  json_annotation: ^4.9.0
+  
+  # Navigation
+  go_router: ^14.8.1
+  
+  # HTTP
+  dio: ^5.7.0
+  
+  # UI
+  flutter_animate: ^4.5.0
+  shimmer: ^3.0.0
+  cached_network_image: ^3.4.1
+  share_plus: ^10.1.3
+  
+  # Fonts (loaded at runtime)
+  google_fonts: ^6.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  json_serializable: ^6.9.0
+  build_runner: ^2.4.13
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/images/
+    - assets/images/classes/
+    - assets/images/talents/
+    - assets/images/enchants/
+    - assets/images/lore/
+    - assets/images/races/
+    - assets/data/
