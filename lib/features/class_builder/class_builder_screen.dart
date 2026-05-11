@@ -11,7 +11,9 @@ import '../../data/models/stats.dart';
 import '../../data/repositories/app_database.dart';
 
 class ClassBuilderScreen extends ConsumerStatefulWidget {
-  const ClassBuilderScreen({super.key});
+  final Build? editBuild;
+
+  const ClassBuilderScreen({super.key, this.editBuild});
 
   @override
   ConsumerState<ClassBuilderScreen> createState() => _ClassBuilderScreenState();
@@ -20,12 +22,14 @@ class ClassBuilderScreen extends ConsumerStatefulWidget {
 class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  final TextEditingController _buildNameController = TextEditingController();
   WarClass? _selectedClass;
   Race? _selectedRace;
   String? _selectedSpec;
   final Set<String> _selectedAbilities = {};
   final Set<String> _selectedTalents = {};
-  final Set<String> _selectedEnchants = {};
+  final Map<String, String?> _selectedEnchantSlots = {};
+  bool _isEditing = false;
   int _pointsRemaining = 31;
   String _searchQuery = '';
   String? _enchantSlot;
@@ -34,15 +38,30 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
-    _selectedClass = WarClass.findById('warrior');
-    _selectedRace = Race.findById('orc');
-    _selectedSpec = 'Arms';
+
+    // Load build if editing
+    if (widget.editBuild != null) {
+      _isEditing = true;
+      final b = widget.editBuild!;
+      _selectedClass = WarClass.findById(b.classId);
+      _selectedRace = b.raceId != null ? Race.findById(b.raceId!) : null;
+      _selectedSpec = b.specName;
+      _selectedAbilities.addAll(b.abilityIds);
+      _selectedTalents.addAll(b.talentIds);
+      _selectedEnchantSlots.addAll(b.enchantSlots);
+      _buildNameController.text = b.name;
+    } else {
+      _selectedClass = WarClass.findById('warrior');
+      _selectedRace = Race.findById('orc');
+      _selectedSpec = 'Arms';
+    }
     _enchantSlot = 'weapon';
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    _buildNameController.dispose();
     super.dispose();
   }
 
@@ -54,7 +73,7 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Class Builder'),
+        title: Text(_isEditing ? 'Edit Build' : 'Class Builder'),
         backgroundColor: _specColor.withValues(alpha: 0.1),
         bottom: TabBar(
           controller: _tabController,
@@ -69,6 +88,7 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
       ),
       body: Column(
         children: [
+          if (_isEditing) _buildNameField(theme),
           _buildSelectors(theme),
           Expanded(
             child: TabBarView(
@@ -84,10 +104,25 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _saveBuild,
-        label: const Text('Save Build'),
-        icon: const Icon(Icons.save),
+        onPressed: () => _saveBuild(widget.editBuild),
+        label: Text(_isEditing ? 'Update Build' : 'Save Build'),
+        icon: Icon(_isEditing ? Icons.check : Icons.save),
         backgroundColor: _specColor,
+      ),
+    );
+  }
+
+  Widget _buildNameField(ThemeData theme) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      color: theme.colorScheme.primary.withValues(alpha: 0.08),
+      child: TextField(
+        controller: _buildNameController,
+        decoration: const InputDecoration(
+          labelText: 'Build Name',
+          border: OutlineInputBorder(),
+        ),
+        onChanged: (v) => setState(() {}),
       ),
     );
   }
@@ -309,42 +344,87 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
             ],
           ),
         ),
+        // Current enchant summary
+        _buildEnchantSummary(theme),
         Expanded(
           child: ListView(
             padding: const EdgeInsets.all(12),
             children: enchants.map((e) {
-              final selected = _selectedEnchants.contains(e.id);
+              final isSelected = _selectedEnchantSlots[e.slot.name] == e.id;
               final tierColor = _tierColor(e.tier);
               return Card(
-                color: selected
+                color: isSelected
                     ? tierColor.withValues(alpha: 0.3)
                     : theme.cardTheme.color,
                 child: ListTile(
                   title: Text(e.name,
                       style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text('${e.description} | ${e.slot.displayName}'),
-                  trailing: Column(
+                  trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(Icons.star, color: tierColor, size: 16),
-                      Checkbox(
-                        value: selected,
-                        onChanged: (_) {
-                          setState(() {
-                            selected
-                                ? _selectedEnchants.remove(e.id)
-                                : _selectedEnchants.add(e.id);
-                          });
-                        },
+                      Icon(
+                        isSelected ? Icons.check_circle : Icons.circle_outlined,
+                        color: isSelected ? tierColor : theme.hintColor,
                       ),
                     ],
                   ),
+                  onTap: () {
+                    setState(() {
+                      if (_selectedEnchantSlots[e.slot.name] == e.id) {
+                        _selectedEnchantSlots[e.slot.name] = null;
+                      } else {
+                        _selectedEnchantSlots[e.slot.name] = e.id;
+                      }
+                    });
+                  },
                 ),
               ).animate().fadeIn(duration: 200.ms);
             }).toList(),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildEnchantSummary(ThemeData theme) {
+    final selected =
+        _selectedEnchantSlots.entries.where((e) => e.value != null).toList();
+    if (selected.isEmpty) return const SizedBox.shrink();
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      color: theme.colorScheme.surface.withValues(alpha: 0.8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Equipped Enchants:',
+              style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.bold, color: _specColor)),
+          const SizedBox(height: 4),
+          ...selected.map((e) {
+            final enchant = sampleEnchants.firstWhere((en) => en.id == e.value);
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2),
+              child: Row(
+                children: [
+                  Icon(Icons.star, color: _tierColor(enchant.tier), size: 14),
+                  const SizedBox(width: 4),
+                  Text(
+                    '${enchant.slot.displayName}: ',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Text(enchant.name,
+                      style: theme.textTheme.bodySmall
+                          ?.copyWith(color: _tierColor(enchant.tier))),
+                ],
+              ),
+            );
+          }),
+        ],
+      ),
     );
   }
 
@@ -455,24 +535,34 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
     }
   }
 
-  void _saveBuild() {
+  void _saveBuild([Build? existing]) {
     if (_selectedClass == null) return;
     final build = Build(
-      id: 'build_${DateTime.now().millisecondsSinceEpoch}',
-      name: '${_selectedClass!.displayName} $_selectedSpec',
-
+      id: existing?.id ?? 'build_${DateTime.now().millisecondsSinceEpoch}',
+      name: _isEditing && _buildNameController.text.isNotEmpty
+          ? _buildNameController.text
+          : '${_selectedClass!.displayName} $_selectedSpec',
+      classId: _selectedClass!.id,
+      specName: _selectedSpec,
       raceId: _selectedRace?.id,
-
       abilityIds: _selectedAbilities.toList(),
       talentIds: _selectedTalents.toList(),
-      enchantSlots: Map.fromEntries(_selectedEnchants.map((e) => MapEntry('weapon', e))),
+      enchantSlots: Map.fromEntries(
+        _selectedEnchantSlots.entries
+            .where((e) => e.value != null)
+            .map((e) => MapEntry(e.key, e.value!)),
+      ),
       isClassless: false,
-      createdAt: DateTime.now(),
-      notes: null,
+      createdAt: existing?.createdAt ?? DateTime.now(),
+      notes: existing?.notes,
     );
     AppDatabase.saveBuild(build);
+    if (!mounted) return;
+    if (_isEditing) {
+      Navigator.of(context).pop();
+    }
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Build saved!')),
+      SnackBar(content: Text(existing != null ? 'Build updated!' : 'Build saved!')),
     );
   }
 }

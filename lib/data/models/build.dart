@@ -6,6 +6,8 @@ part 'build.g.dart';
 class Build {
   final String id;
   final String name;
+  final String classId;
+  final String? specName;
   final String? raceId;
   final bool isClassless;
   final String? realm;
@@ -20,8 +22,10 @@ class Build {
   const Build({
     required this.id,
     required this.name,
+    required this.classId,
+    this.specName,
     this.raceId,
-    required this.isClassless,
+    this.isClassless = false,
     this.realm,
     required this.abilityIds,
     required this.talentIds,
@@ -36,7 +40,10 @@ class Build {
   Map<String, dynamic> toJson() => _$BuildToJson(this);
 
   Build copyWith({
+    String? id,
     String? name,
+    String? classId,
+    String? specName,
     String? raceId,
     bool? isClassless,
     String? realm,
@@ -47,8 +54,10 @@ class Build {
     String? notes,
   }) {
     return Build(
-      id: id,
+      id: id ?? this.id,
       name: name ?? this.name,
+      classId: classId ?? this.classId,
+      specName: specName ?? this.specName,
       raceId: raceId ?? this.raceId,
       isClassless: isClassless ?? this.isClassless,
       realm: realm ?? this.realm,

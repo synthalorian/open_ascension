@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:file_picker/file_picker.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/theme/theme_provider.dart';
 import '../../data/repositories/app_database.dart';
@@ -92,10 +93,21 @@ class SettingsScreen extends ConsumerWidget {
               ListTile(
                 leading: const Icon(Icons.upload),
                 title: const Text('Import Data'),
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Import coming soon')),
-                  );
+                onTap: () async {
+                  final jsonStr = await _pickJsonFile(context);
+                  if (jsonStr == null) return;
+                  try {
+                    await AppDatabase.importAll(jsonStr);
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Import successful')),
+                    );
+                  } catch (e) {
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Import failed: $e')),
+                    );
+                  }
                 },
               ),
               ListTile(
@@ -166,4 +178,13 @@ class SettingsScreen extends ConsumerWidget {
       ),
     );
   }
+}
+
+Future<String?> _pickJsonFile(BuildContext context) async {
+  final result = await FilePicker.platform.pickFiles(
+    type: FileType.custom,
+    allowedExtensions: ['json'],
+  );
+  if (result == null) return null;
+  return File(result.files.single.path!).readAsString();
 }

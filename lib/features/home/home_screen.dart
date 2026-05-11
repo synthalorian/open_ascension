@@ -112,6 +112,13 @@ class HomeScreen extends ConsumerWidget {
                     onTap: () => context.push('/lore'),
                   ).animate().fadeIn(delay: 500.ms),
                   _QuickCard(
+                    title: 'Realms',
+                    subtitle: 'Server status & info',
+                    icon: Icons.dns,
+                    color: theme.colorScheme.tertiary,
+                    onTap: () => context.push('/realms'),
+                  ).animate().fadeIn(delay: 550.ms),
+                  _QuickCard(
                     title: 'Settings',
                     subtitle: 'Themes, data, about',
                     icon: Icons.settings,
