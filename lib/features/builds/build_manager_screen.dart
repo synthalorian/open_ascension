@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/models/build.dart';
 import '../../data/models/class.dart';
 import '../../data/repositories/app_database.dart';
+import '../../core/utils/build_codes.dart';
 import '../class_builder/class_builder_screen.dart';
 
 class BuildManagerScreen extends ConsumerWidget {
@@ -13,7 +15,21 @@ class BuildManagerScreen extends ConsumerWidget {
     final builds = AppDatabase.getBuilds();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('My Builds')),
+      appBar: AppBar(
+        title: const Text('My Builds'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.qr_code_2),
+            tooltip: 'Export All as Code',
+            onPressed: () => _exportAllBuilds(context, builds),
+          ),
+          IconButton(
+            icon: const Icon(Icons.download_for_offline),
+            tooltip: 'Import from Code',
+            onPressed: () => _importBuildsFromCode(context),
+          ),
+        ],
+      ),
       body: builds.isEmpty
           ? const Center(
               child: Column(
@@ -54,6 +70,11 @@ class BuildManagerScreen extends ConsumerWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
+                          icon: const Icon(Icons.share, size: 20),
+                          tooltip: 'Share build code',
+                          onPressed: () => _shareBuild(context, b),
+                        ),
+                        IconButton(
                           icon: const Icon(Icons.edit, size: 20),
                           onPressed: () => _editBuild(context, b),
                         ),
@@ -75,6 +96,193 @@ class BuildManagerScreen extends ConsumerWidget {
           ),
         ),
         child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  void _shareBuild(BuildContext context, Build build) {
+    final code = encodeBuild(build);
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Share Build Code'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Share this code to export your build:',
+                style: Theme.of(ctx).textTheme.bodyMedium),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Theme.of(ctx).colorScheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: SelectableText(
+                code,
+                style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
+                      fontFamily: 'monospace',
+                      fontSize: 11,
+                    ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: code));
+              Navigator.pop(ctx);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Code copied to clipboard!')),
+              );
+            },
+            child: const Text('Copy'),
+          ),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Close')),
+        ],
+      ),
+    );
+  }
+
+  void _exportAllBuilds(BuildContext context, List<Build> builds) {
+    if (builds.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No builds to export')),
+      );
+      return;
+    }
+    final code = encodeBuilds(builds);
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Export ${builds.length} Builds'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Copy this code to backup or share all ${builds.length} builds:',
+                style: Theme.of(ctx).textTheme.bodyMedium),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(8),
+              constraints: const BoxConstraints(maxHeight: 200),
+              decoration: BoxDecoration(
+                color: Theme.of(ctx).colorScheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: SingleChildScrollView(
+                child: SelectableText(
+                  code,
+                  style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
+                        fontFamily: 'monospace',
+                        fontSize: 11,
+                      ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: code));
+              Navigator.pop(ctx);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('${builds.length} builds exported to clipboard!')),
+              );
+            },
+            child: const Text('Copy'),
+          ),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Close')),
+        ],
+      ),
+    );
+  }
+
+  void _importBuildsFromCode(BuildContext context) {
+    final controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Import from Code'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Paste a build code to import:'),
+            const SizedBox(height: 8),
+            TextField(
+              controller: controller,
+              maxLines: 5,
+              decoration: const InputDecoration(
+                hintText: 'Paste code here...',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+          FilledButton(
+            onPressed: () {
+              final code = controller.text.trim();
+              if (code.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Please paste a code')),
+                );
+                return;
+              }
+              try {
+                // Try multi-build first, fall back to single
+                List<Build> imported = [];
+                try {
+                  imported = decodeBuilds(code);
+                } catch (_) {
+                  imported = [decodeBuild(code)];
+                }
+
+                int added = 0;
+                int conflicts = 0;
+                final existing = AppDatabase.getBuilds();
+                final existingIds = existing.map((b) => b.id).toSet();
+
+                for (final build in imported) {
+                  if (existingIds.contains(build.id)) {
+                    // Conflict: rename and add
+                    final now = DateTime.now();
+                    final existingBuild = AppDatabase.getBuilds().firstWhere(
+                      (b) => b.id == build.id,
+                    );
+                    final renamed = existingBuild.copyWith(
+                      name: '${existingBuild.name} (imported)',
+                      id: 'build_${now.millisecondsSinceEpoch}_$added',
+                    );
+                    AppDatabase.saveBuild(renamed);
+                    conflicts++;
+                  } else {
+                    AppDatabase.saveBuild(build);
+                  }
+                  added++;
+                }
+
+                Navigator.pop(ctx);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: conflicts > 0
+                          ? Text('$added builds imported ($conflicts had conflicts, renamed)')
+                          : Text('$added builds imported successfully'),
+                    ),
+                  );
+                }
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Invalid code: $e')),
+                );
+              }
+            },
+            child: const Text('Import'),
+          ),
+        ],
       ),
     );
   }
