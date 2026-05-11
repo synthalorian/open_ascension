@@ -11,9 +11,12 @@ Realm _$RealmFromJson(Map<String, dynamic> json) => Realm(
   name: json['name'] as String,
   type: $enumDecode(_$RealmTypeEnumMap, json['type']),
   status: $enumDecode(_$RealmStatusEnumMap, json['status']),
+  isPvP: json['isPvP'] as bool? ?? false,
+  maxLevel: json['maxLevel'] as String? ?? '80',
   description: json['description'] as String?,
   currentPhase: json['currentPhase'] as String?,
   population: json['population'] as String?,
+  hostAddress: json['hostAddress'] as String?,
 );
 
 Map<String, dynamic> _$RealmToJson(Realm instance) => <String, dynamic>{
@@ -21,9 +24,12 @@ Map<String, dynamic> _$RealmToJson(Realm instance) => <String, dynamic>{
   'name': instance.name,
   'type': _$RealmTypeEnumMap[instance.type]!,
   'status': _$RealmStatusEnumMap[instance.status]!,
+  'isPvP': instance.isPvP,
+  'maxLevel': instance.maxLevel,
   'description': instance.description,
   'currentPhase': instance.currentPhase,
   'population': instance.population,
+  'hostAddress': instance.hostAddress,
 };
 
 const _$RealmTypeEnumMap = {

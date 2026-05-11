@@ -7,6 +7,7 @@ import '../../features/mystic_enchant/mystic_enchant_screen.dart';
 import '../../features/builds/build_manager_screen.dart';
 import '../../features/lore/lore_screen.dart';
 import '../../features/lore/lore_entry_screen.dart';
+import '../../features/realms/realm_browser_screen.dart';
 import '../../features/settings/settings_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -62,6 +63,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/settings',
       pageBuilder: (context, state) => _fadePage(const SettingsScreen(), state),
+    ),
+    GoRoute(
+      path: '/realms',
+      pageBuilder: (context, state) => _fadePage(const RealmBrowserScreen(), state),
     ),
   ],
 );

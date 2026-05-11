@@ -24,6 +24,9 @@ dependencies:
   # Navigation
   go_router: ^14.8.1
   
+  # File picker
+  file_picker: ^8.0.7
+  
   # HTTP
   dio: ^5.7.0
   

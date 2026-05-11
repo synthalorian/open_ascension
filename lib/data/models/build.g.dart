@@ -9,8 +9,10 @@ part of 'build.dart';
 Build _$BuildFromJson(Map<String, dynamic> json) => Build(
   id: json['id'] as String,
   name: json['name'] as String,
+  classId: json['classId'] as String,
+  specName: json['specName'] as String?,
   raceId: json['raceId'] as String?,
-  isClassless: json['isClassless'] as bool,
+  isClassless: json['isClassless'] as bool? ?? false,
   realm: json['realm'] as String?,
   abilityIds: (json['abilityIds'] as List<dynamic>)
       .map((e) => e as String)
@@ -30,6 +32,8 @@ Build _$BuildFromJson(Map<String, dynamic> json) => Build(
 Map<String, dynamic> _$BuildToJson(Build instance) => <String, dynamic>{
   'id': instance.id,
   'name': instance.name,
+  'classId': instance.classId,
+  'specName': instance.specName,
   'raceId': instance.raceId,
   'isClassless': instance.isClassless,
   'realm': instance.realm,
