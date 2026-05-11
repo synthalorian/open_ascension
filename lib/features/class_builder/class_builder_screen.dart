@@ -321,9 +321,9 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
   }
 
   Widget _buildEnchantsTab(ThemeData theme) {
-    final slots = EnchantSlot.values;
+    final tiers = [EnchantTier.uncommon, EnchantTier.rare, EnchantTier.epic, EnchantTier.legendary];
     final enchants = sampleEnchants
-        .where((e) => _enchantSlot == null || e.slot.name == _enchantSlot)
+        .where((e) => _enchantSlot == null || e.tier.name == _enchantSlot)
         .toList();
 
     return Column(
@@ -332,56 +332,73 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
             children: [
-              const Text('Slot: ', style: TextStyle(fontWeight: FontWeight.bold)),
-              ...slots.map((s) => Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: FilterChip(
-                  label: Text(s.displayName),
-                  selected: _enchantSlot == s.name,
-                  onSelected: (_) => setState(() => _enchantSlot = s.name),
+              const Text('Rarity: ', style: TextStyle(fontWeight: FontWeight.bold)),
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      FilterChip(
+                        label: const Text('All'),
+                        selected: _enchantSlot == null,
+                        onSelected: (_) => setState(() => _enchantSlot = null),
+                      ),
+                      const SizedBox(width: 8),
+                      ...tiers.map((t) => Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: FilterChip(
+                          label: Text(t.displayName),
+                          selected: _enchantSlot == t.name,
+                          onSelected: (_) => setState(() => _enchantSlot = t.name),
+                        ),
+                      )),
+                    ],
+                  ),
                 ),
-              )),
+              ),
             ],
           ),
         ),
         // Current enchant summary
         _buildEnchantSummary(theme),
         Expanded(
-          child: ListView(
-            padding: const EdgeInsets.all(12),
-            children: enchants.map((e) {
-              final isSelected = _selectedEnchantSlots[e.slot.name] == e.id;
+          child: ListView.builder(
+            padding: const EdgeInsets.all(8),
+            itemCount: enchants.length,
+            itemBuilder: (context, i) {
+              final e = enchants[i];
               final tierColor = _tierColor(e.tier);
+              final isSelected = _selectedEnchantSlots['me'] == e.id;
               return Card(
                 color: isSelected
                     ? tierColor.withValues(alpha: 0.3)
                     : theme.cardTheme.color,
                 child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: tierColor.withValues(alpha: 0.3),
+                    child: Icon(Icons.auto_awesome, color: tierColor, size: 18),
+                  ),
                   title: Text(e.name,
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text('${e.description} | ${e.slot.displayName}'),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.star, color: tierColor, size: 16),
-                      Icon(
-                        isSelected ? Icons.check_circle : Icons.circle_outlined,
-                        color: isSelected ? tierColor : theme.hintColor,
-                      ),
-                    ],
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: tierColor)),
+                  subtitle: Text(e.description,
+                      maxLines: 2, overflow: TextOverflow.ellipsis),
+                  trailing: Icon(
+                    isSelected ? Icons.check_circle : Icons.circle_outlined,
+                    color: isSelected ? tierColor : theme.hintColor,
                   ),
                   onTap: () {
                     setState(() {
-                      if (_selectedEnchantSlots[e.slot.name] == e.id) {
-                        _selectedEnchantSlots[e.slot.name] = null;
+                      if (_selectedEnchantSlots['me'] == e.id) {
+                        _selectedEnchantSlots['me'] = null;
                       } else {
-                        _selectedEnchantSlots[e.slot.name] = e.id;
+                        _selectedEnchantSlots['me'] = e.id;
                       }
                     });
                   },
                 ),
               ).animate().fadeIn(duration: 200.ms);
-            }).toList(),
+            },
           ),
         ),
       ],
@@ -389,43 +406,40 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
   }
 
   Widget _buildEnchantSummary(ThemeData theme) {
-    final selected =
-        _selectedEnchantSlots.entries.where((e) => e.value != null).toList();
-    if (selected.isEmpty) return const SizedBox.shrink();
+    final selectedId = _selectedEnchantSlots['me'];
+    if (selectedId == null) return const SizedBox.shrink();
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      color: theme.colorScheme.surface.withValues(alpha: 0.8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Equipped Enchants:',
-              style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold, color: _specColor)),
-          const SizedBox(height: 4),
-          ...selected.map((e) {
-            final enchant = sampleEnchants.firstWhere((en) => en.id == e.value);
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2),
-              child: Row(
-                children: [
-                  Icon(Icons.star, color: _tierColor(enchant.tier), size: 14),
-                  const SizedBox(width: 4),
-                  Text(
-                    '${enchant.slot.displayName}: ',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w600),
-                  ),
-                  Text(enchant.name,
-                      style: theme.textTheme.bodySmall
-                          ?.copyWith(color: _tierColor(enchant.tier))),
-                ],
-              ),
-            );
-          }),
-        ],
-      ),
-    );
+    try {
+      final enchant = sampleEnchants.firstWhere((en) => en.id == selectedId);
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        color: theme.colorScheme.surface.withValues(alpha: 0.8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Selected Enchant:',
+                style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold, color: _specColor)),
+            Row(
+              children: [
+                Icon(Icons.star, color: _tierColor(enchant.tier), size: 14),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(enchant.name,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                          color: _tierColor(enchant.tier),
+                          fontWeight: FontWeight.w600)),
+                ),
+              ],
+            ),
+            Text(enchant.description,
+                style: theme.textTheme.labelSmall, maxLines: 3),
+          ],
+        ),
+      );
+    } catch (e) {
+      return const SizedBox.shrink();
+    }
   }
 
   Widget _buildStatsTab(ThemeData theme) {
@@ -527,7 +541,6 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
 
   Color _tierColor(EnchantTier tier) {
     switch (tier) {
-      case EnchantTier.common: return Colors.grey;
       case EnchantTier.uncommon: return const Color(0xFF1EFF00);
       case EnchantTier.rare: return Colors.blue;
       case EnchantTier.epic: return Colors.purple;
