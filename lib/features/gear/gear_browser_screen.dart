@@ -191,7 +191,14 @@ class _GearBrowserScreenState extends State<GearBrowserScreen> {
           // List
           Expanded(
             child: _filtered.isEmpty
-                ? const Center(child: Text('No gear matches your filters'))
+                ? Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Icon(Icons.inventory_2_outlined, size: 48, color: Theme.of(context).hintColor),
+              const SizedBox(height: 16),
+              const Text('No gear matches your filters'),
+              const SizedBox(height: 8),
+              Text('Try adjusting your search or filters',
+                  style: Theme.of(context).textTheme.bodySmall),
+            ]))
                 : ListView.builder(
                     padding: const EdgeInsets.all(12),
                     itemCount: _filtered.length,

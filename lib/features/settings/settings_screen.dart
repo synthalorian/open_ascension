@@ -44,7 +44,13 @@ class SettingsScreen extends ConsumerWidget {
                       return Card(
                         color: colors.colorScheme.surface,
                         child: InkWell(
-                          onTap: () => ref.read(themeProvider.notifier).setTheme(t),
+                          onTap: () {
+                            ref.read(themeProvider.notifier).setTheme(t);
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Theme: ${t.displayName}'), duration: const Duration(seconds: 1)),
+                            );
+                          },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

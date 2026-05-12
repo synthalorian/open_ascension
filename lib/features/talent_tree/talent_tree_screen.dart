@@ -24,7 +24,7 @@ class _TalentTreeScreenState extends ConsumerState<TalentTreeScreen>
   @override
   void initState() {
     super.initState();
-    _cls = WarClass.findById(widget.classId)!;
+    _cls = WarClass.findById(widget.classId) ?? WarClass.all.first;
     _tabController = TabController(length: _cls.specNames.length, vsync: this);
     _tabController.addListener(_onSpecTabChanged);
   }

@@ -14,10 +14,7 @@ class ThemeProvider extends Notifier<AsyncValue<AppThemeMode>> {
     final prefs = await SharedPreferences.getInstance();
     final savedName = prefs.getString(_key);
     if (savedName != null) {
-      final mode = AppThemeMode.all.firstWhere(
-        (m) => m.toString() == savedName,
-        orElse: () => AppThemeMode.neonGrid,
-      );
+      final mode = AppThemeMode.fromName(savedName) ?? AppThemeMode.neonGrid;
       state = AsyncValue.data(mode);
     }
   }
@@ -25,7 +22,7 @@ class ThemeProvider extends Notifier<AsyncValue<AppThemeMode>> {
   Future<void> setTheme(AppThemeMode mode) async {
     state = AsyncValue.data(mode);
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_key, mode.toString());
+    await prefs.setString(_key, mode.name);
   }
 }
 

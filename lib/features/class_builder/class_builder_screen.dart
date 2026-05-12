@@ -12,6 +12,9 @@ import '../../data/models/gear_item.dart';
 import '../../data/models/gear_items.dart';
 import '../../data/repositories/app_database.dart';
 
+/// Null-safe card color helper.
+Color _cardColor(ThemeData theme) => theme.cardTheme.color ?? theme.colorScheme.surface;
+
 class ClassBuilderScreen extends ConsumerStatefulWidget {
   final Build? editBuild;
 
@@ -94,7 +97,7 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
       ),
       body: Column(
         children: [
-          if (_isEditing) _buildNameField(theme),
+          _buildNameField(theme),
           _buildSelectors(theme),
           Expanded(
             child: TabBarView(
@@ -227,7 +230,7 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
               return Card(
                 color: selected
                     ? _specColor.withValues(alpha: 0.3)
-                    : theme.cardTheme.color,
+                    : _cardColor(theme),
                 child: ListTile(
                   title: Text(a.name,
                       style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -294,7 +297,7 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
                 ...tierTalents.map((t) {
                   final selected = _selectedTalents.contains(t.id);
                   return Card(
-                    color: selected ? _specColor : theme.cardTheme.color,
+                    color: selected ? _specColor : _cardColor(theme),
                     child: ListTile(
                       title: Text(t.name,
                           style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -379,7 +382,7 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
               return Card(
                 color: isSelected
                     ? tierColor.withValues(alpha: 0.3)
-                    : theme.cardTheme.color,
+                    : _cardColor(theme),
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundColor: tierColor.withValues(alpha: 0.3),
@@ -456,7 +459,7 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+            color: theme.colorScheme.surfaceVariant.withValues(alpha: 0.5),
             border: Border(bottom: BorderSide(color: theme.dividerColor)),
           ),
           child: Column(
@@ -656,7 +659,7 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
         _buildStatRow('Spirit', classStats.spirit.toString(), 'Increases mana regeneration.', theme),
         const SizedBox(height: 8),
         _buildStatHeader('SURVIVAL', theme),
-        _buildStatRow('Health', secondary.health.toString(), '${secondary.health}/$secondary.health maximum HP.', theme),
+        _buildStatRow('Health', '${secondary.health}', '${secondary.health} maximum HP.', theme),
         _buildStatRow('Health Regen', '', 'Automatic HP recovery (based on Spirit & race).', theme),
         _buildStatRow('Armor', secondary.armor.toString(), 'Reduces physical damage taken.', theme),
         _buildStatRow('Dodge', '${secondary.dodgePercent}%', 'Chance to dodge melee attacks.', theme),
