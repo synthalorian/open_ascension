@@ -156,7 +156,24 @@ class _TalentTreeScreenState extends ConsumerState<TalentTreeScreen>
 
   Widget _buildTalentTree(ThemeData theme, List<Talent> talents) {
     if (talents.isEmpty) {
-      return const Center(child: Text('No talents defined for this spec yet'));
+      return SingleChildScrollView(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(Icons.account_tree_outlined, size: 64, color: theme.colorScheme.primary),
+            const SizedBox(height: 16),
+            Text('No talent data for ${_cls.displayName} — ${_cls.specNames[_tabController.index]}',
+                style: theme.textTheme.titleMedium,
+                textAlign: TextAlign.center),
+            const SizedBox(height: 8),
+            Text('Switch to a different class from the dropdown, or pick a spec that has talent data defined.',
+                style: theme.textTheme.bodyMedium?.copyWith(color: theme.hintColor),
+                textAlign: TextAlign.center),
+          ],
+        ),
+      );
     }
 
     final tiers = <int, List<Talent>>{};

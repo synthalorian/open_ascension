@@ -287,14 +287,21 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
         .toList();
 
     if (talents.isEmpty) {
-      return Center(
+      return SingleChildScrollView(
+        padding: const EdgeInsets.all(32),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(Icons.account_tree_outlined, size: 48, color: theme.hintColor),
-            const SizedBox(height: 12),
-            Text('No talents for ${_selectedClass.displayName} — ${_selectedSpec}',
-                style: theme.textTheme.bodyLarge),
+            Icon(Icons.account_tree_outlined, size: 64, color: theme.colorScheme.primary),
+            const SizedBox(height: 16),
+            Text('No talent data for ${_selectedClass.displayName} — ${_selectedSpec}',
+                style: theme.textTheme.titleMedium,
+                textAlign: TextAlign.center),
+            const SizedBox(height: 8),
+            Text('Switch to a class/spec with talent data above (e.g. Warrior Arms, Paladin Retribution, etc.)',
+                style: theme.textTheme.bodyMedium?.copyWith(color: theme.hintColor),
+                textAlign: TextAlign.center),
           ],
         ),
       );

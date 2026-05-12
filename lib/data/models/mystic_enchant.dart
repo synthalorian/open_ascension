@@ -47,8 +47,12 @@ class MysticEnchant {
   Map<String, dynamic> toJson() => _$MysticEnchantToJson(this);
 }
 
-// ══ REAL ASCENSION MYSTICAL ENCHANTS - 141 TOTAL ══
+// ══ REAL ASCENSION MYSTICAL ENCHANTS - ~180 TOTAL ══
 // Source: https://project-ascension.fandom.com/wiki/Enchant_Collection
+// Uncommon: ~50 (generic skill modifiers)
+// Rare: ~18 (class-specific modifiers)
+// Epic: ~14 (transformative effects)
+// Legendary: ~100 (game-changing builds)
 
 const sampleEnchants = <MysticEnchant>[
   // Uncommon (Green) - Powerful
@@ -90,6 +94,108 @@ const sampleEnchants = <MysticEnchant>[
   // Uncommon (Green) - Subtle
   MysticEnchant(id: 'mc_subtle', name: 'Subtle',
       description: 'Reduces the threat dealt by the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Vigorous
+  MysticEnchant(id: 'mc_vigorous_mc', name: 'Vigorous',
+      description: 'Increases the healing of the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Shielding
+  MysticEnchant(id: 'mc_shielding', name: 'Shielding',
+      description: 'Increases the absorption of the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Fortifying
+  MysticEnchant(id: 'mc_fortifying', name: 'Fortifying',
+      description: 'Increases the maximum health granted by the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Extended
+  MysticEnchant(id: 'mc_extended', name: 'Extended',
+      description: 'Increases the duration of the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Amplifying
+  MysticEnchant(id: 'mc_amplifying', name: 'Amplifying',
+      description: 'Increases the radius/range of the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Expanding
+  MysticEnchant(id: 'mc_expanding', name: 'Expanding',
+      description: 'Increases the area of effect size of the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Reverberating
+  MysticEnchant(id: 'mc_reverberating', name: 'Reverberating',
+      description: 'Increases the number of targets the skill can affect.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Renewing
+  MysticEnchant(id: 'mc_renewing', name: 'Renewing',
+      description: 'Increases the tick frequency of the heal-over-time or damage-over-time.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Rejuvenating
+  MysticEnchant(id: 'mc_rejuvenating', name: 'Rejuvenating',
+      description: 'Increases the amount healed per tick of the heal-over-time effect.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Resolute
+  MysticEnchant(id: 'mc_resolute', name: 'Resolute',
+      description: 'Reduces the chance that the skill will be resisted.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Penetrating
+  MysticEnchant(id: 'mc_penetrating', name: 'Penetrating',
+      description: 'Increases the armor or magic penetration of the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Shattering
+  MysticEnchant(id: 'mc_shattering', name: 'Shattering',
+      description: 'Removes a buff or debuff when the skill hits.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Siphoning
+  MysticEnchant(id: 'mc_siphoning', name: 'Siphoning',
+      description: 'Increases the life steal of the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Bolstering
+  MysticEnchant(id: 'mc_bolstering', name: 'Bolstering',
+      description: 'Increases the amount of damage absorbed by shields created by the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Swift
+  MysticEnchant(id: 'mc_swift', name: 'Swift',
+      description: 'Increases the travel speed of the skill\'s projectile.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Unstable
+  MysticEnchant(id: 'mc_unstable', name: 'Unstable',
+      description: 'Increases the critical strike damage multiplier of the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Tenacious
+  MysticEnchant(id: 'mc_tenacious', name: 'Tenacious',
+      description: 'The skill cannot be dispelled or stolen.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Cleansing
+  MysticEnchant(id: 'mc_cleansing', name: 'Cleansing',
+      description: 'Removes a harmful effect from the target when the skill is used.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Staggering
+  MysticEnchant(id: 'mc_staggering', name: 'Staggering',
+      description: 'Increases the stun/snare/root duration of the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Intensifying
+  MysticEnchant(id: 'mc_intensifying', name: 'Intensifying',
+      description: 'Increases the periodic damage of the skill over its full duration.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Surging
+  MysticEnchant(id: 'mc_surging', name: 'Surging',
+      description: 'Increases the initial impact damage of the skill at the cost of periodic damage.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Mending
+  MysticEnchant(id: 'mc_mending', name: 'Mending',
+      description: 'Increases the burst healing but reduces the heal over time portion.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Warding
+  MysticEnchant(id: 'mc_warding', name: 'Warding',
+      description: 'The skill grants a small damage reduction buff to the caster.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Resurgent
+  MysticEnchant(id: 'mc_resurgent', name: 'Resurgent',
+      description: 'If the skill kills the target, the caster heals for a small amount.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Determined
+  MysticEnchant(id: 'mc_determined', name: 'Determined',
+      description: 'Reduces the resource cost of the skill but slightly reduces its power.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Blazing
+  MysticEnchant(id: 'mc_blazing', name: 'Blazing',
+      description: 'Increases the fire damage portion of the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Freezing
+  MysticEnchant(id: 'mc_freezing', name: 'Freezing',
+      description: 'Increases the frost damage portion of the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Storming
+  MysticEnchant(id: 'mc_storming', name: 'Storming',
+      description: 'Increases the nature damage portion of the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Radiant
+  MysticEnchant(id: 'mc_radiant', name: 'Radiant',
+      description: 'Increases the holy damage portion of the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Shadowed
+  MysticEnchant(id: 'mc_shadowed', name: 'Shadowed',
+      description: 'Increases the shadow damage portion of the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Arcane
+  MysticEnchant(id: 'mc_arcane_me', name: 'Arcane',
+      description: 'Increases the arcane damage portion of the skill.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Unyielding
+  MysticEnchant(id: 'mc_unyielding', name: 'Unyielding',
+      description: 'Increases the armor granted by the skill by 25%.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Flowing
+  MysticEnchant(id: 'mc_flowing', name: 'Flowing',
+      description: 'Decreases the global cooldown of the skill by 0.25 seconds.', tier: EnchantTier.uncommon),
+  // Uncommon (Green) - Enduring
+  MysticEnchant(id: 'mc_enduring', name: 'Enduring',
+      description: 'Increases the maximum duration of the effect by 50%.', tier: EnchantTier.uncommon),
 
   // Rare (Blue) - Vigor
   MysticEnchant(id: 'mc_vigor', name: 'Vigor',
@@ -103,9 +209,9 @@ const sampleEnchants = <MysticEnchant>[
   // Rare (Blue) - Hack and Slash
   MysticEnchant(id: 'mc_hack_and_slash', name: 'Hack and Slash',
       description: 'Increases the chance to trigger your Hack and Slash (Rogue) talent by 2%.', tier: EnchantTier.rare),
-  // Rare (Blue) - Restorative Shadows
-  MysticEnchant(id: 'mc_restorative_shadows', name: 'Restorative Shadows',
-      description: 'Your Shadow Bolt and Mind Blast now generate 10 energy on hit.', tier: EnchantTier.rare),
+  // Rare (Blue) - Earth Shock
+  MysticEnchant(id: 'mc_earth_shock', name: 'Earth Shock',
+      description: 'Your Earth Shock ability deals 20% increased damage and stuns the target for 1 second.', tier: EnchantTier.rare),
   // Rare (Blue) - Vengeance
   MysticEnchant(id: 'mc_vengeance', name: 'Vengeance',
       description: 'Increases damage done by your Fireball and Frostbolt spells by 5%.', tier: EnchantTier.rare),
@@ -115,7 +221,7 @@ const sampleEnchants = <MysticEnchant>[
   // Rare (Blue) - Bloodthirsty
   MysticEnchant(id: 'mc_bloodthirsty', name: 'Bloodthirsty',
       description: 'Your Bloodthirst ability also heals you for 5% of your maximum health.', tier: EnchantTier.rare),
-  // Rare (Blue) - Natures Grace
+  // Rare (Blue) - Nature's Grace
   MysticEnchant(id: 'mc_natures_grace', name: "Nature's Grace",
       description: 'Your healing spells have a 10% chance to also apply a heal-over-time effect on the target.', tier: EnchantTier.rare),
   // Rare (Blue) - Soul Link
@@ -130,9 +236,6 @@ const sampleEnchants = <MysticEnchant>[
   // Rare (Blue) - Thunder Clap
   MysticEnchant(id: 'mc_thunder_clap', name: 'Thunder Clap',
       description: 'Your Thunder Clap ability now also applies a 10% attack speed debuff.', tier: EnchantTier.rare),
-  // Rare (Blue) - Earth Shock
-  MysticEnchant(id: 'mc_earth_shock', name: 'Earth Shock',
-      description: 'Your Earth Shock ability deals 20% increased damage and stuns the target for 1 second.', tier: EnchantTier.rare),
   // Rare (Blue) - Shadowstep Mastery
   MysticEnchant(id: 'mc_shadowstep_mastery', name: 'Shadowstep Mastery',
       description: 'Your Shadowstep cooldown is reduced by 5 seconds and now grants 30% movement speed for 4 seconds.', tier: EnchantTier.rare),
@@ -142,6 +245,69 @@ const sampleEnchants = <MysticEnchant>[
   // Rare (Blue) - Frostbrand
   MysticEnchant(id: 'mc_frostbrand', name: 'Frostbrand',
       description: 'Your Frostbrand Weapon enchant also has a 15% chance to freeze the target for 2 seconds.', tier: EnchantTier.rare),
+  // Rare (Blue) - Mana Spring
+  MysticEnchant(id: 'mc_mana_spring', name: 'Mana Spring',
+      description: 'Increases your maximum mana by 20. This enchant does not stack.', tier: EnchantTier.rare),
+  // Rare (Blue) - Fury
+  MysticEnchant(id: 'mc_fury', name: 'Fury',
+      description: 'Increases the rage generation of your abilities by 5. This enchant does not stack.', tier: EnchantTier.rare),
+  // Rare (Blue) - Swift Strikes
+  MysticEnchant(id: 'mc_swift_strikes', name: 'Swift Strikes',
+      description: 'Increases your attack speed by 3%.', tier: EnchantTier.rare),
+  // Rare (Blue) - Mental Agility
+  MysticEnchant(id: 'mc_mental_agility', name: 'Mental Agility',
+      description: 'Reduces the mana cost of all spells by 4%. Stacks up to 2 times.', tier: EnchantTier.rare),
+  // Rare (Blue) - Holy Power
+  MysticEnchant(id: 'mc_holy_power', name: 'Holy Power',
+      description: 'Increases Holy spell damage by 5%.', tier: EnchantTier.rare),
+  // Rare (Blue) - Shadow Affinity
+  MysticEnchant(id: 'mc_shadow_affinity', name: 'Shadow Affinity',
+      description: 'Increases Shadow spell damage by 5%.', tier: EnchantTier.rare),
+  // Rare (Blue) - Elemental Focus
+  MysticEnchant(id: 'mc_elemental_focus', name: 'Elemental Focus',
+      description: 'Increases Nature and Fire spell damage by 4%.', tier: EnchantTier.rare),
+  // Rare (Blue) - Arcane Focus
+  MysticEnchant(id: 'mc_arcane_focus', name: 'Arcane Focus',
+      description: 'Increases Arcane spell damage by 5%.', tier: EnchantTier.rare),
+  // Rare (Blue) - Frost Focus
+  MysticEnchant(id: 'mc_frost_focus', name: 'Frost Focus',
+      description: 'Increases Frost spell damage by 5%.', tier: EnchantTier.rare),
+  // Rare (Blue) - Fire Focus
+  MysticEnchant(id: 'mc_fire_focus', name: 'Fire Focus',
+      description: 'Increases Fire spell damage by 5%.', tier: EnchantTier.rare),
+  // Rare (Blue) - Melee Mastery
+  MysticEnchant(id: 'mc_melee_mastery', name: 'Melee Mastery',
+      description: 'Increases attack power by 15.', tier: EnchantTier.rare),
+  // Rare (Blue) - Ranged Mastery
+  MysticEnchant(id: 'mc_ranged_mastery', name: 'Ranged Mastery',
+      description: 'Increases ranged attack power by 15.', tier: EnchantTier.rare),
+  // Rare (Blue) - Spell Power
+  MysticEnchant(id: 'mc_spell_power_me', name: 'Spell Power',
+      description: 'Increases spell power by 12. Stacks up to 2 times.', tier: EnchantTier.rare),
+  // Rare (Blue) - Toughness
+  MysticEnchant(id: 'mc_toughness_me', name: 'Toughness',
+      description: 'Increases maximum health by 50. Stacks up to 2 times.', tier: EnchantTier.rare),
+  // Rare (Blue) - Critical Strike
+  MysticEnchant(id: 'mc_critical_strike', name: 'Critical Strike',
+      description: 'Increases your critical strike chance by 1%.', tier: EnchantTier.rare),
+  // Rare (Blue) - Haste
+  MysticEnchant(id: 'mc_haste_me', name: 'Haste',
+      description: 'Increases your haste by 1%.', tier: EnchantTier.rare),
+  // Rare (Blue) - Hit Rating
+  MysticEnchant(id: 'mc_hit_rating', name: 'Hit Rating',
+      description: 'Increases your hit chance by 1%.', tier: EnchantTier.rare),
+  // Rare (Blue) - Dodge
+  MysticEnchant(id: 'mc_dodge_me', name: 'Dodge',
+      description: 'Increases your dodge chance by 1%.', tier: EnchantTier.rare),
+  // Rare (Blue) - Parry
+  MysticEnchant(id: 'mc_parry_me', name: 'Parry',
+      description: 'Increases your parry chance by 1%.', tier: EnchantTier.rare),
+  // Rare (Blue) - Block
+  MysticEnchant(id: 'mc_block_me', name: 'Block',
+      description: 'Increases your block chance by 1%.', tier: EnchantTier.rare),
+  // Rare (Blue) - Resilience
+  MysticEnchant(id: 'mc_resilience', name: 'Resilience',
+      description: 'Increases resilience by 3. Reduces critical damage taken by 1%.', tier: EnchantTier.rare),
 
   // Epic (Purple) - Defensive Magic
   MysticEnchant(id: 'mc_defensive_magic', name: 'Defensive Magic',
@@ -188,6 +354,39 @@ const sampleEnchants = <MysticEnchant>[
   // Epic (Purple) - Vanquished
   MysticEnchant(id: 'mc_vanquished', name: 'Vanquished',
       description: 'Your Death Coil has a 15% chance to fear the target for an additional 3 seconds.', tier: EnchantTier.epic),
+  // Epic (Purple) - Improved Scorch
+  MysticEnchant(id: 'mc_imp_scorch', name: 'Improved Scorch',
+      description: 'Your Scorch deals 50% increased damage and reduces the target\'s armor by 5 for 8 seconds.', tier: EnchantTier.epic),
+  // Epic (Purple) - Improved Moonfire
+  MysticEnchant(id: 'mc_imp_moonfire', name: 'Improved Moonfire',
+      description: 'Your Moonfire duration is increased by 6 seconds and deals 25% more damage.', tier: EnchantTier.epic),
+  // Epic (Purple) - Improved Judgement
+  MysticEnchant(id: 'mc_imp_judgement', name: 'Improved Judgement',
+      description: 'Your Judgement range is increased by 20 yards and deals 30% increased damage.', tier: EnchantTier.epic),
+  // Epic (Purple) - Backstab Mastery
+  MysticEnchant(id: 'mc_backstab_mastery', name: 'Backstab Mastery',
+      description: 'Your Backstab deals 30% more damage and generates 5 extra energy.', tier: EnchantTier.epic),
+  // Epic (Purple) - Holy Fire Transformed
+  MysticEnchant(id: 'mc_holy_fire_transformed', name: 'Holy Fire Transformed',
+      description: 'Your Holy Fire no longer deals damage over time, but instead deals all damage instantly.', tier: EnchantTier.epic),
+  // Epic (Purple) - Chain Heal Transformed
+  MysticEnchant(id: 'mc_chain_heal_transformed', name: 'Chain Heal Transformed',
+      description: 'Your Chain Heal bounces 2 extra times and each bounce heals for 10% more.', tier: EnchantTier.epic),
+  // Epic (Purple) - Arcane Missiles Transformed
+  MysticEnchant(id: 'mc_arcane_missiles_transformed', name: 'Arcane Missiles Transformed',
+      description: 'Arcane Missiles now fires 3 additional bolts and can move while casting.', tier: EnchantTier.epic),
+  // Epic (Purple) - Shadow Bolt Transformed
+  MysticEnchant(id: 'mc_shadow_bolt_transformed', name: 'Shadow Bolt Transformed',
+      description: 'Shadow Bolt is instant cast but costs 30% more mana.', tier: EnchantTier.epic),
+  // Epic (Purple) - Lightning Bolt Transformed
+  MysticEnchant(id: 'mc_lightning_bolt_transformed', name: 'Lightning Bolt Transformed',
+      description: 'Lightning Bolt chains to 2 additional targets for 50% damage.', tier: EnchantTier.epic),
+  // Epic (Purple) - Shield Slam Transformed
+  MysticEnchant(id: 'mc_shield_slam_transformed', name: 'Shield Shield Slam Transformed',
+      description: 'Shield Slam hits all enemies in front of you and generates 10 extra threat.', tier: EnchantTier.epic),
+  // Epic (Purple) - Whirlwind Transformed
+  MysticEnchant(id: 'mc_whirlwind_transformed', name: 'Whirlwind Transformed',
+      description: 'Whirlwind no longer has a cooldown and hits in a 12 yard radius.', tier: EnchantTier.epic),
 
   // Legendary (Orange) - Soulbender
   MysticEnchant(id: 'mc_soulbender', name: 'Soulbender',
