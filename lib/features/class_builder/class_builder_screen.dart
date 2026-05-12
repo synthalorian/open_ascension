@@ -8,6 +8,8 @@ import '../../data/models/mystic_enchant.dart';
 import '../../data/models/build.dart';
 import '../../data/models/race.dart';
 import '../../data/models/stats.dart';
+import '../../data/models/gear_item.dart';
+import '../../data/models/gear_items.dart';
 import '../../data/repositories/app_database.dart';
 
 class ClassBuilderScreen extends ConsumerStatefulWidget {
@@ -33,11 +35,14 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
   int _pointsRemaining = 31;
   String _searchQuery = '';
   String? _enchantSlot;
+  String? _gearSearch;
+  GearRarity? _gearRarityFilter;
+  final Map<GearSlot, GearItem?> _equippedGear = {};
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
 
     // Load build if editing
     if (widget.editBuild != null) {
@@ -81,6 +86,7 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
             Tab(icon: Icon(Icons.flash_on), text: 'Abilities'),
             Tab(icon: Icon(Icons.account_tree), text: 'Talents'),
             Tab(icon: Icon(Icons.stars), text: 'Enchants'),
+            Tab(icon: Icon(Icons.inventory_2), text: 'Gear'),
             Tab(icon: Icon(Icons.speed), text: 'Stats'),
           ],
           labelColor: _specColor,
@@ -97,6 +103,7 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
                 _buildAbilitiesTab(theme),
                 _buildTalentsTab(theme),
                 _buildEnchantsTab(theme),
+                _buildGearTab(theme),
                 _buildStatsTab(theme),
               ],
             ),
@@ -442,17 +449,205 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
     }
   }
 
+  Widget _buildGearTab(ThemeData theme) {
+    return Column(
+      children: [
+        // Equipped gear summary
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+            border: Border(bottom: BorderSide(color: theme.dividerColor)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Equipped Gear',
+                  style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 4),
+              Wrap(
+                spacing: 8,
+                runSpacing: 4,
+                children: GearSlot.values.map((slot) {
+                  final item = _equippedGear[slot];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2),
+                    child: GestureDetector(
+                      onTap: item != null
+                          ? () => setState(() => _equippedGear[slot] = null)
+                          : null,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: item != null
+                              ? item.rarity.color.withValues(alpha: 0.2)
+                              : theme.colorScheme.surface.withValues(alpha: 0.8),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                              color: item != null
+                                  ? item.rarity.color
+                                  : theme.dividerColor.withValues(alpha: 0.3)),
+                        ),
+                        child: Text(
+                          item != null ? '${slot.displayName}: ${item.name}' : slot.displayName,
+                          style: theme.textTheme.labelSmall?.copyWith(
+                              color: item != null ? item.rarity.color : theme.hintColor,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+        ),
+        // Search and filter
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  decoration: const InputDecoration(
+                    hintText: 'Search gear...',
+                    prefixIcon: Icon(Icons.search, size: 22),
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+                  ),
+                  onChanged: (v) => setState(() => _gearSearch = v.isEmpty ? null : v),
+                ),
+              ),
+              const SizedBox(width: 8),
+              PopupMenuButton<GearRarity?>(
+                icon: const Icon(Icons.filter_list),
+                onSelected: (v) => setState(() => _gearRarityFilter = v),
+                itemBuilder: (ctx) => [
+                  const PopupMenuItem(value: null, child: Text('All Rarities')),
+                  ...GearRarity.values.map((r) => PopupMenuItem(
+                      value: r,
+                      child: Row(
+                        children: [
+                          Icon(Icons.circle, color: r.color, size: 12),
+                          const SizedBox(width: 8),
+                          Text(r.displayName),
+                        ],
+                      ),
+                    )),
+                ],
+              ),
+            ],
+          ),
+        ),
+        // Gear list
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            children: _filteredGear.map((item) {
+              final equipped = _equippedGear[item.slot] == item;
+              return Card(
+                margin: const EdgeInsets.only(bottom: 6),
+                child: ListTile(
+                  leading: Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: item.rarity.color.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Icon(Icons.inventory_2_outlined,
+                        color: item.rarity.color, size: 18),
+                  ),
+                  title: Text(item.name,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: item.rarity.color)),
+                  subtitle: Text(
+                      '${item.slot.displayName} • iLvl ${item.itemLevel}'
+                      '${item.source != null ? ' • ${item.source}' : ''}',
+                      maxLines: 1, overflow: TextOverflow.ellipsis),
+                  trailing: Icon(
+                    equipped ? Icons.check_circle : Icons.add_circle_outline,
+                    color: equipped ? item.rarity.color : theme.hintColor,
+                  ),
+                  onTap: () {
+                    setState(() {
+                      if (equipped) {
+                        _equippedGear[item.slot] = null;
+                      } else {
+                        _equippedGear[item.slot] = item;
+                      }
+                    });
+                  },
+                ),
+              ).animate().fadeIn(duration: 150.ms);
+            }).toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<GearItem> get _filteredGear {
+    var items = sampleGearItems;
+    if (_gearSearch != null) {
+      final q = _gearSearch!.toLowerCase();
+      final matchedIds = items
+          .where((g) =>
+              g.name.toLowerCase().contains(q) ||
+              (g.source?.toLowerCase().contains(q) ?? false))
+          .map((g) => g.id)
+          .toSet();
+      items = items.where((g) => matchedIds.contains(g.id)).toList();
+    }
+    if (_gearRarityFilter != null) {
+      items = items.where((g) => g.rarity == _gearRarityFilter).toList();
+    }
+    items.sort((a, b) => b.itemLevel.compareTo(a.itemLevel));
+    return items;
+  }
+
   Widget _buildStatsTab(ThemeData theme) {
+    // Aggregate gear bonuses
+    final gearArmor = _equippedGear.values.fold(0, (sum, g) {
+      if (g == null) return sum;
+      return sum + ((g.stats['armor'] as num?) ?? 0).toInt();
+    });
+    final gearBonusAP = _equippedGear.values.fold(0, (sum, g) {
+      if (g == null) return sum;
+      return sum + ((g.stats['attackPower'] as num?) ?? 0).toInt();
+    });
+    final gearBonusSpellPower = _equippedGear.values.fold(0, (sum, g) {
+      if (g == null) return sum;
+      return sum + ((g.stats['spellPower'] as num?) ?? 0).toInt();
+    });
+    // For crit/haste/resilience, we need to convert from rating or percent
+    int gearBonusCrit = 0, gearBonusHaste = 0, gearBonusResilience = 0;
+    for (final g in _equippedGear.values) {
+      if (g == null) continue;
+      gearBonusCrit += ((g.stats['crit'] as num?) ?? 0).toInt();
+      gearBonusHaste += ((g.stats['haste'] as num?) ?? 0).toInt();
+      gearBonusResilience += ((g.stats['resilience'] as num?) ?? 0).toInt();
+    }
+
     final classStats = defaultClassStats[_selectedClass?.id ?? 'warrior'] ?? const PrimaryStats();
     final secondary = computeSecondaryStats(
       primary: classStats,
       classId: _selectedClass?.id ?? 'warrior',
       raceId: _selectedRace?.id,
+      gearArmor: gearArmor,
+      gearBonusAP: gearBonusAP,
+      gearBonusSpellPower: gearBonusSpellPower,
+      gearBonusCrit: gearBonusCrit,
+      gearBonusHaste: gearBonusHaste,
+      gearBonusResilience: gearBonusResilience,
     );
 
     return ListView(
       padding: const EdgeInsets.all(12),
       children: [
+        if (_equippedGear.values.any((g) => g != null))
+          _buildGearStatsSummary(theme),
         _buildStatHeader('PRIMARY STATS', theme),
         _buildStatRow('Strength', classStats.strength.toString(), 'Determines Attack Power and Parry.', theme),
         _buildStatRow('Agility', classStats.agility.toString(), 'Increases Armor, Dodge, and Ranged Attack Power.', theme),
@@ -491,6 +686,57 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
         ],
         const SizedBox(height: 32),
       ],
+    );
+  }
+
+  Widget _buildGearStatsSummary(ThemeData theme) {
+    final gearItems = _equippedGear.values.where((g) => g != null).toList();
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+            color: _specColor.withValues(alpha: 0.3), width: 1.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.inventory_2, size: 18),
+              const SizedBox(width: 12),
+              Text('${gearItems.length} gear pieces equipped',
+                  style: theme.textTheme.titleSmall
+                      ?.copyWith(fontWeight: FontWeight.bold)),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              ...gearItems.map((g) {
+                return Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(g!.name,
+                          style: TextStyle(
+                              color: g.rarity.color,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13)),
+                      Text(g.slot.displayName,
+                          style: theme.textTheme.labelSmall
+                              ?.copyWith(color: theme.hintColor)),
+                    ],
+                  ),
+                );
+              }),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
