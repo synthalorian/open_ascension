@@ -1,11 +1,14 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:file_picker/file_picker.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/theme/theme_provider.dart';
 import '../../data/repositories/app_database.dart';
+import '../../data/models/build.dart';
+import '../../core/utils/build_codes.dart';
 
+/// Export/import using short codes (clipboard-based, works on web & mobile)
+/// For native: use FilePicker to save/load JSON files to disk.
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
@@ -77,38 +80,28 @@ class SettingsScreen extends ConsumerWidget {
             children: [
               ListTile(
                 leading: const Icon(Icons.download),
-                title: const Text('Export Data'),
+                title: const Text('Export All Builds'),
                 onTap: () async {
-                  final messenger = ScaffoldMessenger.of(context);
                   final builds = AppDatabase.getBuilds();
-                  final json = AppDatabase.exportAll(builds);
-                  final tempDir = Directory.systemTemp.path;
-                  final path = '$tempDir/open_ascension_backup.json';
-                  await File(path).writeAsString(json);
-                  messenger.showSnackBar(
-                    SnackBar(content: Text('Exported to: $path')),
-                  );
+                  if (builds.isEmpty) {
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('No builds to export')),
+                    );
+                    return;
+                  }
+                  final code = encodeBuilds(builds);
+                  await Clipboard.setData(ClipboardData(text: code));
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('${builds.length} builds exported to clipboard'),
+                  ));
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.upload),
-                title: const Text('Import Data'),
-                onTap: () async {
-                  final jsonStr = await _pickJsonFile(context);
-                  if (jsonStr == null) return;
-                  try {
-                    await AppDatabase.importAll(jsonStr);
-                    if (!context.mounted) return;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Import successful')),
-                    );
-                  } catch (e) {
-                    if (!context.mounted) return;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Import failed: $e')),
-                    );
-                  }
-                },
+                title: const Text('Import Builds from Code'),
+                onTap: () => _importFromCode(context),
               ),
               ListTile(
                 leading: const Icon(Icons.delete_forever, color: Colors.red),
@@ -164,7 +157,7 @@ class SettingsScreen extends ConsumerWidget {
                     const SizedBox(height: 8),
                     const Text('Features:'),
                     ...['Class Builder with Talents', 'Mystic Enchants',
-                         'Build Manager', 'Warcraft Lore', 'Theme System']
+                         'Build Manager', 'Warcraft Lore', 'Theme System', 'Gear Database']
                         .map((f) => Padding(
                               padding: const EdgeInsets.only(left: 16, top: 4),
                               child: Text('• $f'),
@@ -178,13 +171,53 @@ class SettingsScreen extends ConsumerWidget {
       ),
     );
   }
-}
 
-Future<String?> _pickJsonFile(BuildContext context) async {
-  final result = await FilePicker.platform.pickFiles(
-    type: FileType.custom,
-    allowedExtensions: ['json'],
-  );
-  if (result == null) return null;
-  return File(result.files.single.path!).readAsString();
+  void _importFromCode(BuildContext context) {
+    final controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Import Builds'),
+        content: TextField(
+          controller: controller,
+          maxLines: 5,
+          decoration: const InputDecoration(
+            hintText: 'Paste build code here...',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+          FilledButton(
+            onPressed: () {
+              final code = controller.text.trim();
+              if (code.isEmpty) return;
+              try {
+                List<Build> imported;
+                try {
+                  imported = decodeBuilds(code);
+                } catch (_) {
+                  imported = [decodeBuild(code)];
+                }
+                for (final build in imported) {
+                  AppDatabase.saveBuild(build);
+                }
+                Navigator.pop(ctx);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('${imported.length} builds imported')),
+                  );
+                }
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Invalid code: $e')),
+                );
+              }
+            },
+            child: const Text('Import'),
+          ),
+        ],
+      ),
+    );
+  }
 }
