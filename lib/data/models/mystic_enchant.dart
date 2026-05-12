@@ -212,6 +212,9 @@ const sampleEnchants = <MysticEnchant>[
   // Rare (Blue) - Earth Shock
   MysticEnchant(id: 'mc_earth_shock', name: 'Earth Shock',
       description: 'Your Earth Shock ability deals 20% increased damage and stuns the target for 1 second.', tier: EnchantTier.rare),
+  // Rare (Blue) - Restorative Shadows
+  MysticEnchant(id: 'mc_restorative_shadows', name: 'Restorative Shadows',
+      description: 'Your Shadow Bolt and Mind Blast now generate 10 energy on hit.', tier: EnchantTier.rare),
   // Rare (Blue) - Vengeance
   MysticEnchant(id: 'mc_vengeance', name: 'Vengeance',
       description: 'Increases damage done by your Fireball and Frostbolt spells by 5%.', tier: EnchantTier.rare),
