@@ -9,6 +9,11 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppDatabase.init();
 
+  final container = ProviderContainer();
+
+  // Load saved theme before the app is built
+  await container.read(themeProvider.notifier).loadSaved();
+
   runApp(
     ProviderScope(
       child: const App(),
@@ -34,18 +39,12 @@ class App extends ConsumerWidget {
           body: Center(child: Icon(Icons.error_outline)),
         ),
       ),
-      data: (mode) {
-        // Load saved theme on startup
-        final provider = ref.read(themeProvider.notifier);
-        provider.loadSaved();
-
-        return MaterialApp.router(
-          title: 'Open Ascension',
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.getTheme(mode),
-          routerConfig: appRouter,
-        );
-      },
+      data: (mode) => MaterialApp.router(
+        title: 'Open Ascension',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.getTheme(mode),
+        routerConfig: appRouter,
+      ),
     );
   }
 }

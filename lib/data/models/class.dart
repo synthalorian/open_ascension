@@ -78,6 +78,10 @@ class WarClass {
         description: 'Demonic pacts fuel their devastating dark magic.',
         resourceTypes: ['Mana'], weaponTypes: ['Staff', 'Wand'],
         armorTypes: ['Cloth'], specNames: ['Affliction', 'Demonology', 'Destruction']),
+    WarClass(id: 'druid', displayName: 'Druid', colorHex: '#FF7D0A', role: ClassRole.melee,
+        description: 'Shapeshifters who draw power from nature, capable of healing, DPS, and tanking.',
+        resourceTypes: ['Mana', 'Energy', 'Rage'], weaponTypes: ['Staff', 'Fist', 'Mace', 'Dagger'],
+        armorTypes: ['Leather'], specNames: ['Balance', 'Feral', 'Restoration']),
   ];
 
   static const allWarClasses = all;

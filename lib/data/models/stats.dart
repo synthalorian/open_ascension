@@ -264,6 +264,7 @@ Map<String, PrimaryStats> defaultClassStats = {
   'shaman': const PrimaryStats(strength: 70, agility: 60, stamina: 90, intellect: 100, spirit: 70),
   'mage': const PrimaryStats(strength: 25, agility: 30, stamina: 65, intellect: 130, spirit: 65),
   'warlock': const PrimaryStats(strength: 30, agility: 35, stamina: 75, intellect: 115, spirit: 70),
+  'druid': const PrimaryStats(strength: 80, agility: 90, stamina: 100, intellect: 80, spirit: 60),
 };
 
 // Stat distribution points available per class/race combo

@@ -322,5 +322,41 @@ const sampleTalents = <Talent>[
   Talent(id: 'w_des_bleed', name: 'Bane', description: 'Reduces cast time of Shadow Bolt and Rain of Fire by .2/.4 sec.', classId: 'warlock', specName: 'Destruction', tier: 1, row: 3, column: 3, maxRank: 2),
   Talent(id: 'w_des_aftermath', name: 'Aftermath', description: 'Gives Destruction spells 2/4/6/8/10% chance to disorient.', classId: 'warlock', specName: 'Destruction', tier: 2, row: 2, column: 2, maxRank: 5),
   Talent(id: 'w_des_fire', name: 'Destructive Reach', description: 'Increases radius of Destruction spells by 1/2 sec and damage by 5/10%.', classId: 'warlock', specName: 'Destruction', tier: 3, row: 2, column: 2, maxRank: 2),
-  Talent(id: 'w_des_soul_fire', name: 'Soul Fire', description: 'Burns the enemy soul, dealing 300 Fire damage.', classId: 'warlock', specName: 'Destruction', tier: 4, row: 2, column: 2, maxRank: 1),
+
+
+  // ============================================================
+  // DRUID
+  // ============================================================
+
+  // --- Balance ---
+  Talent(id: 'd_b_nature_grace', name: "Nature's Grace", description: 'Reduces mana cost of Wrath by 1/2/3.', classId: 'druid', specName: 'Balance', tier: 1, row: 1, column: 1, maxRank: 3),
+  Talent(id: 'd_b_moon fury', name: "Moonfury", description: 'Increases Starfire and Moonfire damage by 2/4/6/8/10%.', classId: 'druid', specName: 'Balance', tier: 1, row: 2, column: 2, maxRank: 5),
+  Talent(id: 'd_b_star_wrath', name: 'Starfire', description: 'Hurls a bolt of celestial energy, dealing Arcane damage.', classId: 'druid', specName: 'Balance', tier: 1, row: 3, column: 3, maxRank: 1),
+  Talent(id: 'd_b_moon_guidance', name: 'Moonguided', description: 'Increases spell damage by 4/8/12/16/20%.', classId: 'druid', specName: 'Balance', tier: 2, row: 1, column: 1, maxRank: 5),
+  Talent(id: 'd_b_wrath_celestial', name: 'Wrath of Celestials', description: 'Increases Wrath damage by 4/7/10%.', classId: 'druid', specName: 'Balance', tier: 2, row: 2, column: 2, maxRank: 3),
+  Talent(id: 'd_b_eclipse', name: 'Eclipse', description: 'Your Starfire and Wrath criticals trigger Lunar and Solar Eclipse.', classId: 'druid', specName: 'Balance', tier: 3, row: 2, column: 2, maxRank: 1),
+  Talent(id: 'd_b_typhoon', name: 'Typhoon', description: 'Deals 150% Nature damage, knocking back enemies.', classId: 'druid', specName: 'Balance', tier: 4, row: 2, column: 2, maxRank: 1, prereqTalentId: 'd_b_eclipse'),
+  Talent(id: 'd_b_moonkin', name: 'Moonkin Form', description: 'Transform into Moonkin, increasing Armor and spell damage.', classId: 'druid', specName: 'Balance', tier: 5, row: 2, column: 2, maxRank: 1, prereqTalentId: 'd_b_typhoon'),
+
+  // --- Feral ---
+  Talent(id: 'd_f_ferocity', name: 'Ferocity', description: 'Reduces energy cost of feral abilities by 1/2/3/4/5.', classId: 'druid', specName: 'Feral', tier: 1, row: 1, column: 1, maxRank: 5),
+  Talent(id: 'd_f_savage_fury', name: 'Savage Fury', description: 'Increases damage of Maul and Swipe by 10/20/30%.', classId: 'druid', specName: 'Feral', tier: 1, row: 2, column: 2, maxRank: 3),
+  Talent(id: 'd_f_shred', name: 'Shred', description: 'Attack for 220% damage, granting 2 combo points.', classId: 'druid', specName: 'Feral', tier: 1, row: 3, column: 3, maxRank: 1),
+  Talent(id: 'd_f_thick_hide', name: 'Thick Hide', description: 'Increases armor by 2/4/6/8/10%.', classId: 'druid', specName: 'Feral', tier: 2, row: 1, column: 1, maxRank: 5),
+  Talent(id: 'd_f_predatory', name: 'Predatory Instincts', description: 'Increases damage by 2/4/6% and reduces damage taken by 2/4/6%.', classId: 'druid', specName: 'Feral', tier: 2, row: 2, column: 2, maxRank: 3),
+  Talent(id: 'd_f_mangle', name: 'Mangle', description: 'Ferocious attack, increasing Bleed damage by 30%.', classId: 'druid', specName: 'Feral', tier: 3, row: 2, column: 2, maxRank: 1),
+  Talent(id: 'd_f_blooming', name: 'Blooming', description: 'Increases Regrowth and Rejuvenation healing by 5/10/15% in feral form.', classId: 'druid', specName: 'Feral', tier: 3, row: 1, column: 1, maxRank: 3, prereqTalentId: 'd_f_mangle'),
+  Talent(id: 'd_f_bear_form', name: 'Dire Bear Form', description: 'Increase Armor and threat generation when in Dire Bear Form.', classId: 'druid', specName: 'Feral', tier: 4, row: 2, column: 2, maxRank: 1, prereqTalentId: 'd_f_mangle'),
+  Talent(id: 'd_f_king_jungle', name: 'King of the Jungle', description: 'Increases all damage in Bear/Cat form by 5/10/15%.', classId: 'druid', specName: 'Feral', tier: 5, row: 2, column: 2, maxRank: 1, prereqTalentId: 'd_f_bear_form'),
+
+  // --- Restoration ---
+  Talent(id: 'd_r_improved_mark', name: 'Improved Mark', description: 'Increases Mark of the Wild effect by 7/14/20%.', classId: 'druid', specName: 'Restoration', tier: 1, row: 1, column: 1, maxRank: 3),
+  Talent(id: 'd_r_furor', name: 'Furor', description: 'Increases max rage by 5/10 and mana by 10/20% on shapeshift.', classId: 'druid', specName: 'Restoration', tier: 1, row: 2, column: 2, maxRank: 5),
+  Talent(id: 'd_b_n_swiftness', name: "Nature's Swiftness", description: 'Next Nature spell becomes instant cast.', classId: 'druid', specName: 'Restoration', tier: 1, row: 3, column: 3, maxRank: 1),
+  Talent(id: 'd_r_healing_touch', name: 'Natural Shaper', description: 'Increases Healing Touch by 4/8/12/16/20%.', classId: 'druid', specName: 'Restoration', tier: 2, row: 1, column: 1, maxRank: 5),
+  Talent(id: 'd_r_impt_rejuvenation', name: 'Improved Rejuvenation', description: 'Increases Rejuvenation healing by 5/10/15%.', classId: 'druid', specName: 'Restoration', tier: 2, row: 2, column: 2, maxRank: 3),
+  Talent(id: 'd_r_tranquility', name: 'Tranquility', description: 'Heals all party members over 8 seconds.', classId: 'druid', specName: 'Restoration', tier: 3, row: 2, column: 2, maxRank: 1),
+  Talent(id: 'd_r_swiftmend', name: 'Swiftmend', description: 'Consumes Regrowth or Rejuvenation for an instant massive heal.', classId: 'druid', specName: 'Restoration', tier: 4, row: 2, column: 2, maxRank: 1, prereqTalentId: 'd_r_tranquility'),
+  Talent(id: 'd_r_tree_form', name: 'Tree of Life Form', description: 'Transforms into Tree of Life, increasing healing and aura effects.', classId: 'druid', specName: 'Restoration', tier: 5, row: 2, column: 2, maxRank: 1, prereqTalentId: 'd_r_swiftmend'),
+  // MARK_END
 ];

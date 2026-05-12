@@ -89,7 +89,7 @@ const sampleEnchants = <MysticEnchant>[
       description: 'Increases the hit chance of the skill.', tier: EnchantTier.uncommon),
   // Uncommon (Green) - Subtle
   MysticEnchant(id: 'mc_subtle', name: 'Subtle',
-      description: 'Reduces the threat dealt by the skill. }', tier: EnchantTier.uncommon),
+      description: 'Reduces the threat dealt by the skill.', tier: EnchantTier.uncommon),
 
   // Rare (Blue) - Vigor
   MysticEnchant(id: 'mc_vigor', name: 'Vigor',
@@ -105,7 +105,43 @@ const sampleEnchants = <MysticEnchant>[
       description: 'Increases the chance to trigger your Hack and Slash (Rogue) talent by 2%.', tier: EnchantTier.rare),
   // Rare (Blue) - Restorative Shadows
   MysticEnchant(id: 'mc_restorative_shadows', name: 'Restorative Shadows',
-      description: 'Your Shadow Bolt and Mind Blast now generate 10 energy on hit. }', tier: EnchantTier.rare),
+      description: 'Your Shadow Bolt and Mind Blast now generate 10 energy on hit.', tier: EnchantTier.rare),
+  // Rare (Blue) - Vengeance
+  MysticEnchant(id: 'mc_vengeance', name: 'Vengeance',
+      description: 'Increases damage done by your Fireball and Frostbolt spells by 5%.', tier: EnchantTier.rare),
+  // Rare (Blue) - Arcane Resilience
+  MysticEnchant(id: 'mc_arcane_resilience', name: 'Arcane Resilience',
+      description: 'Reduces the cooldown of your Blink spell by 2 seconds.', tier: EnchantTier.rare),
+  // Rare (Blue) - Bloodthirsty
+  MysticEnchant(id: 'mc_bloodthirsty', name: 'Bloodthirsty',
+      description: 'Your Bloodthirst ability also heals you for 5% of your maximum health.', tier: EnchantTier.rare),
+  // Rare (Blue) - Natures Grace
+  MysticEnchant(id: 'mc_natures_grace', name: "Nature's Grace",
+      description: 'Your healing spells have a 10% chance to also apply a heal-over-time effect on the target.', tier: EnchantTier.rare),
+  // Rare (Blue) - Soul Link
+  MysticEnchant(id: 'mc_soul_link', name: 'Soul Link',
+      description: 'Your Drain Life and Drain Soul spells also heal your pet for 50% of the damage dealt.', tier: EnchantTier.rare),
+  // Rare (Blue) - Power Word: Fortitude
+  MysticEnchant(id: 'mc_power_word_fortitude', name: 'Power Word: Fortitude',
+      description: 'Your Power Word: Shield also increases the targets maximum health by 10% while active.', tier: EnchantTier.rare),
+  // Rare (Blue) - Raptor Strike
+  MysticEnchant(id: 'mc_raptor_strike', name: 'Raptor Strike',
+      description: 'Your Raptor Strike ability deals 15% increased damage and reduces the targets movement speed.', tier: EnchantTier.rare),
+  // Rare (Blue) - Thunder Clap
+  MysticEnchant(id: 'mc_thunder_clap', name: 'Thunder Clap',
+      description: 'Your Thunder Clap ability now also applies a 10% attack speed debuff.', tier: EnchantTier.rare),
+  // Rare (Blue) - Earth Shock
+  MysticEnchant(id: 'mc_earth_shock', name: 'Earth Shock',
+      description: 'Your Earth Shock ability deals 20% increased damage and stuns the target for 1 second.', tier: EnchantTier.rare),
+  // Rare (Blue) - Shadowstep Mastery
+  MysticEnchant(id: 'mc_shadowstep_mastery', name: 'Shadowstep Mastery',
+      description: 'Your Shadowstep cooldown is reduced by 5 seconds and now grants 30% movement speed for 4 seconds.', tier: EnchantTier.rare),
+  // Rare (Blue) - Crusader Strike
+  MysticEnchant(id: 'mc_crusader_strike', name: 'Crusader Strike',
+      description: 'Your Crusader Strike ability generates 2 Holy Power instead of 1.', tier: EnchantTier.rare),
+  // Rare (Blue) - Frostbrand
+  MysticEnchant(id: 'mc_frostbrand', name: 'Frostbrand',
+      description: 'Your Frostbrand Weapon enchant also has a 15% chance to freeze the target for 2 seconds.', tier: EnchantTier.rare),
 
   // Epic (Purple) - Defensive Magic
   MysticEnchant(id: 'mc_defensive_magic', name: 'Defensive Magic',
@@ -118,7 +154,40 @@ const sampleEnchants = <MysticEnchant>[
       description: 'Your Bladestorm now hits with both weapons.', tier: EnchantTier.epic),
   // Epic (Purple) - Hailstorm
   MysticEnchant(id: 'mc_hailstorm', name: 'Hailstorm',
-      description: 'Your Blizzard is transformed into Blizzard (Halestorm), giving it a cast time instead of a channel. }', tier: EnchantTier.epic),
+      description: 'Your Blizzard is transformed into Blizzard (Halestorm), giving it a cast time instead of a channel.', tier: EnchantTier.epic),
+  // Epic (Purple) - Echo of the Elements
+  MysticEnchant(id: 'mc_echo_elements', name: 'Echo of the Elements',
+      description: 'Your Lava Burst has a 30% chance to cast a second time for free at your current location.', tier: EnchantTier.epic),
+  // Epic (Purple) - Shadowweave
+  MysticEnchant(id: 'mc_shadowweave', name: 'Shadowweave',
+      description: 'Your Mind Flay applies Shadowweave, increasing Shadow damage taken by 10% for 8 seconds.', tier: EnchantTier.epic),
+  // Epic (Purple) - Divine Aegis
+  MysticEnchant(id: 'mc_divine_aegis', name: 'Divine Aegis',
+      description: 'Your critical heals create a shield absorbing damage equal to 30% of the heal amount for 12 seconds.', tier: EnchantTier.epic),
+  // Epic (Purple) - Sudden Death
+  MysticEnchant(id: 'mc_sudden_death', name: 'Sudden Death',
+      description: 'Your Execute ability can be used on any target, dealing 50% increased damage to targets above 20% health.', tier: EnchantTier.epic),
+  // Epic (Purple) - Lock and Load
+  MysticEnchant(id: 'mc_lock_and_load', name: 'Lock and Load',
+      description: 'Your Arcane Shot has a 20% chance to make your next Explosive Shot cost no Focus and have no cooldown.', tier: EnchantTier.epic),
+  // Epic (Purple) - Malygiss Fury
+  MysticEnchant(id: 'mc_malygiss_fury', name: "Malygos's Fury",
+      description: 'Your Arcane Blast and Arcane Missiles cost 25% less mana but deal 15% reduced damage to players.', tier: EnchantTier.epic),
+  // Epic (Purple) - Bloodworms
+  MysticEnchant(id: 'mc_bloodworms', name: 'Bloodworms',
+      description: 'Your Blood Strike has a 20% chance to summon a Bloodworm that attacks your target and heals you.', tier: EnchantTier.epic),
+  // Epic (Purple) - Savage Roar
+  MysticEnchant(id: 'mc_savage_roar', name: 'Savage Roar',
+      description: 'Your Shred and Ferocious Bite abilities deal 20% increased damage while in Cat Form.', tier: EnchantTier.epic),
+  // Epic (Purple) - Way of the Monk
+  MysticEnchant(id: 'mc_way_mono', name: 'Way of the Monk',
+      description: 'Your Tiger Palm ability now also grants you a 15% dodge chance for 6 seconds.', tier: EnchantTier.epic),
+  // Epic (Purple) - Windwalk
+  MysticEnchant(id: 'mc_windwalk', name: 'Windwalk',
+      description: 'Your Ghost Wolf form grants 40% increased movement speed and immunity to roots and snares.', tier: EnchantTier.epic),
+  // Epic (Purple) - Vanquished
+  MysticEnchant(id: 'mc_vanquished', name: 'Vanquished',
+      description: 'Your Death Coil has a 15% chance to fear the target for an additional 3 seconds.', tier: EnchantTier.epic),
 
   // Legendary (Orange) - Soulbender
   MysticEnchant(id: 'mc_soulbender', name: 'Soulbender',
@@ -476,5 +545,5 @@ const sampleEnchants = <MysticEnchant>[
       description: 'Corrupts your Bear Form, reducing your Physical damage by 30% but making your melee attacks deal additional high-threat Shadow damage. While in Corrupted Bear Form, your Maul and Mangle (Bear) have a chance to apply Corruption and your Swipe (Bear) drains life from targets afflicted by your Corruption. In addition, Shadow Bolts made instant by Nightfall or Backlash can be cast without leaving Corrupted Bear Form and will hit up to two additional targets, dealing reduced damage.', tier: EnchantTier.legendary),
   // Legendary (Orange) - Harbinger of Pestilence
   MysticEnchant(id: 'mc_harbinger_of_pestilence', name: 'Harbinger of Pestilence',
-      description: 'Your Insect Swarm is transformed into Insect Swarm (Plague), a disease spell dealing Plague damage, and benefiting from the damage increase from Haunt. Your Wrath now grants you a stack of Plaguebringer which increases the damage of your diseases by 20% while active for 5 seconds, stacking 3 times. In addition, casting Haunt while you have Plaguebringer stacks causes an explosion around the target, shooting bile on nearby enemies dealing Plague damage to up to 5 targets based on the number of stacks you have. Plague damage is a combination of the Shadow and Nature schools and will benefit from the highest modifiers to either school. }', tier: EnchantTier.legendary),
+      description: 'Your Insect Swarm is transformed into Insect Swarm (Plague), a disease spell dealing Plague damage, and benefiting from the damage increase from Haunt. Your Wrath now grants you a stack of Plaguebringer which increases the damage of your diseases by 20% while active for 5 seconds, stacking 3 times. In addition, casting Haunt while you have Plaguebringer stacks causes an explosion around the target, shooting bile on nearby enemies dealing Plague damage to up to 5 targets based on the number of stacks you have. Plague damage is a combination of the Shadow and Nature schools and will benefit from the highest modifiers to either school.', tier: EnchantTier.legendary),
 ];
