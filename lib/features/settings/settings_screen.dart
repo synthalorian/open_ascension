@@ -151,13 +151,14 @@ class SettingsScreen extends ConsumerWidget {
                         style: theme.textTheme.headlineSmall?.copyWith(
                             fontWeight: FontWeight.bold, color: theme.colorScheme.primary)),
                     const SizedBox(height: 8),
-                    const Text('v0.1.0'),
+                    const Text('v0.2.0'),
                     const SizedBox(height: 16),
-                    const Text('A companion app for Project Ascension WoW server.'),
+                    const Text('The ultimate Project Ascension WoW companion app.'),
                     const SizedBox(height: 8),
                     const Text('Features:'),
-                    ...['Class Builder with Talents', 'Mystic Enchants',
-                         'Build Manager', 'Warcraft Lore', 'Theme System', 'Gear Database']
+                    ...['Class Builder with Abilities & Talents', 'Mystic Enchants (141 real)',
+                         'Build Manager with Share Codes', 'Gear Database (200 items)', 'Warcraft Lore',
+                         'Theme System', 'Realm Browser', 'Stats with WotLK Formulas']
                         .map((f) => Padding(
                               padding: const EdgeInsets.only(left: 16, top: 4),
                               child: Text('• $f'),
