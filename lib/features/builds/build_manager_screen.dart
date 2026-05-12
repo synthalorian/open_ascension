@@ -55,9 +55,9 @@ class BuildManagerScreen extends ConsumerWidget {
                 return Card(
                   child: ListTile(
                     leading: CircleAvatar(
-                      backgroundColor: cls?.color ?? Colors.grey,
+                      backgroundColor: cls.color,
                       child: Text(
-                        (cls?.displayName ?? '?').substring(0, 1),
+                        cls.displayName.substring(0, 1),
                         style: const TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),
@@ -65,7 +65,7 @@ class BuildManagerScreen extends ConsumerWidget {
                     title: Text(b.name,
                         style: const TextStyle(fontWeight: FontWeight.bold)),
                     subtitle: Text(
-                        '${cls?.displayName ?? 'Unknown'}$specText'),
+                        '${cls.displayName}$specText'),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [

@@ -102,7 +102,6 @@ class StatFormulas {
   /// Agility → Armor: 2 Armor per Agi (varies by class armor type)
   static int armorPerAgi(String classId) {
     final cls = WarClass.findById(classId);
-    if (cls == null) return 1;
     final armors = cls.armorTypes;
     if (armors.contains('Plate')) return 2;
     if (armors.contains('Mail')) return 2;
@@ -116,7 +115,6 @@ class StatFormulas {
   /// Intellect → Mana: 15 Mana per Int (varies by class)
   static int manaPerInt(String classId) {
     final cls = WarClass.findById(classId);
-    if (cls == null) return 15;
     if (cls.role == ClassRole.caster) return 15;
     return 15;
   }
@@ -133,7 +131,6 @@ class StatFormulas {
   /// Armor at level 80 base
   static int baseArmor(String classId) {
     final cls = WarClass.findById(classId);
-    if (cls == null) return 0;
     final armors = cls.armorTypes;
     if (armors.contains('Plate')) return 4000;
     if (armors.contains('Mail')) return 3000;

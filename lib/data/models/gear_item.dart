@@ -74,9 +74,9 @@ extension GearRarityX on GearRarity {
   }[this]!;
 
   Color get color => const {
-    GearRarity.common: Colors.grey,
+    GearRarity.common: Color(0xFF9D9D9D),
     GearRarity.uncommon: Color(0xFF1EFF00),
-    GearRarity.rare: Colors.blue,
+    GearRarity.rare: Color(0xFF0070DD),
     GearRarity.epic: Color(0xFFA335EE),
     GearRarity.legendary: Color(0xFFFF8000),
   }[this]!;
