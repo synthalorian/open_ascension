@@ -24,7 +24,7 @@ class _TalentTreeScreenState extends ConsumerState<TalentTreeScreen>
   @override
   void initState() {
     super.initState();
-    _cls = WarClass.findById(widget.classId) ?? WarClass.all.first;
+    _cls = WarClass.findById(widget.classId);
     _tabController = TabController(length: _cls.specNames.length, vsync: this);
     _tabController.addListener(_onSpecTabChanged);
   }
@@ -44,7 +44,19 @@ class _TalentTreeScreenState extends ConsumerState<TalentTreeScreen>
     super.dispose();
   }
 
-  Color get _specColor => _cls.color;
+  void _onClassChanged(WarClass? newClass) {
+    if (newClass == null || newClass.id == _cls.id) return;
+    _tabController.dispose();
+    setState(() {
+      _cls = newClass;
+      _ranks.clear();
+      _pointsRemaining = 31;
+      _tabController = TabController(length: _cls.specNames.length, vsync: this);
+      _tabController.addListener(_onSpecTabChanged);
+    });
+  }
+
+  Color get _specColor => _cls.specColors[_tabController.index];
 
   /// Check if a talent's prerequisites are met.
   bool _canSelect(Talent t, List<Talent> allTalents) {
@@ -63,6 +75,20 @@ class _TalentTreeScreenState extends ConsumerState<TalentTreeScreen>
       appBar: AppBar(
         title: Text('${_cls.displayName} Talents'),
         actions: [
+          // Class selector
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: DropdownButton<WarClass>(
+              value: _cls,
+              items: WarClass.all
+                  .map((c) => DropdownMenuItem(value: c, child: Text(c.displayName)))
+                  .toList(),
+              onChanged: _onClassChanged,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface),
+              underline: const SizedBox.shrink(),
+            ),
+          ),
           if (_ranks.isNotEmpty)
             TextButton.icon(
               onPressed: () => setState(() {
@@ -88,7 +114,7 @@ class _TalentTreeScreenState extends ConsumerState<TalentTreeScreen>
               controller: _tabController,
               children: _cls.specNames.map((spec) {
                 final talents = sampleTalents
-                    .where((t) => t.classId == widget.classId && t.specName == spec)
+                    .where((t) => t.classId == _cls.id && t.specName == spec)
                     .toList();
                 return _buildTalentTree(theme, talents);
               }).toList(),

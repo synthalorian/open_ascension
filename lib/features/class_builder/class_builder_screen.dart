@@ -27,10 +27,10 @@ class ClassBuilderScreen extends ConsumerStatefulWidget {
 class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final TextEditingController _buildNameController = TextEditingController();
-  WarClass? _selectedClass;
-  Race? _selectedRace;
-  String? _selectedSpec;
+  late final TextEditingController _buildNameController;
+  late WarClass _selectedClass;
+  late Race _selectedRace;
+  late String _selectedSpec;
   final Set<String> _selectedAbilities = {};
   final Set<String> _selectedTalents = {};
   final Map<String, String?> _selectedEnchantSlots = {};
@@ -42,28 +42,32 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
   GearRarity? _gearRarityFilter;
   final Map<GearSlot, GearItem?> _equippedGear = {};
 
+  void _initDefaults() {
+    _selectedClass = WarClass.findById('warrior');
+    _selectedRace = Race.findById('orc');
+    _selectedSpec = 'Arms';
+    _enchantSlot = null; // Show all tiers by default
+  }
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 5, vsync: this);
+    _buildNameController = TextEditingController();
 
-    // Load build if editing
     if (widget.editBuild != null) {
       _isEditing = true;
       final b = widget.editBuild!;
       _selectedClass = WarClass.findById(b.classId);
-      _selectedRace = b.raceId != null ? Race.findById(b.raceId!) : null;
-      _selectedSpec = b.specName;
+      _selectedRace = b.raceId != null ? Race.findById(b.raceId!) : Race.findById('orc');
+      _selectedSpec = b.specName ?? _selectedClass.specNames.first;
       _selectedAbilities.addAll(b.abilityIds);
       _selectedTalents.addAll(b.talentIds);
       _selectedEnchantSlots.addAll(b.enchantSlots);
       _buildNameController.text = b.name;
     } else {
-      _selectedClass = WarClass.findById('warrior');
-      _selectedRace = Race.findById('orc');
-      _selectedSpec = 'Arms';
+      _initDefaults();
     }
-    _enchantSlot = 'weapon';
   }
 
   @override
@@ -73,7 +77,32 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
     super.dispose();
   }
 
-  Color get _specColor => _selectedClass?.color ?? Colors.grey;
+  Color get _specColor => _selectedClass.color;
+
+  void _onClassChanged(WarClass? newClass) {
+    if (newClass == null) return;
+    setState(() {
+      _selectedClass = newClass;
+      _selectedSpec = newClass.specNames.first;
+      _selectedAbilities.clear();
+      _selectedTalents.clear();
+      _pointsRemaining = 31;
+      _searchQuery = '';
+    });
+  }
+
+  void _onRaceChanged(Race? newRace) {
+    if (newRace == null) return;
+    setState(() => _selectedRace = newRace);
+  }
+
+  void _onSpecChanged(String spec) {
+    setState(() {
+      _selectedSpec = spec;
+      _selectedTalents.clear();
+      _pointsRemaining = 31;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +161,7 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
           labelText: 'Build Name',
           border: OutlineInputBorder(),
         ),
-        onChanged: (v) => setState(() {}),
+        onChanged: (_) => setState(() {}),
       ),
     );
   }
@@ -151,15 +180,7 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
                 items: WarClass.all
                     .map((c) => DropdownMenuItem(value: c, child: Text(c.displayName)))
                     .toList(),
-                onChanged: (c) {
-                  setState(() {
-                    _selectedClass = c;
-                    _selectedSpec = c?.specNames.first;
-                    _selectedAbilities.clear();
-                    _selectedTalents.clear();
-                    _pointsRemaining = 31;
-                  });
-                },
+                onChanged: _onClassChanged,
               ),
               const SizedBox(width: 16),
               const Text('Race: ', style: TextStyle(fontWeight: FontWeight.bold)),
@@ -168,28 +189,23 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
                 items: allRaces
                     .map((r) => DropdownMenuItem(value: r, child: Text(r.displayName)))
                     .toList(),
-                onChanged: (r) => setState(() => _selectedRace = r),
+                onChanged: _onRaceChanged,
               ),
             ],
           ),
-          if (_selectedClass != null) ...[
+          if (_selectedClass.specNames.isNotEmpty) ...[
             const SizedBox(height: 8),
             Row(
               children: [
                 const Text('Spec: ', style: TextStyle(fontWeight: FontWeight.bold)),
-                ..._selectedClass!.specNames.map((s) => Padding(
+                const SizedBox(width: 4),
+                ..._selectedClass.specNames.map((s) => Padding(
                   padding: const EdgeInsets.only(right: 8),
                   child: FilterChip(
                     label: Text(s),
                     selected: _selectedSpec == s,
                     onSelected: (selected) {
-                      if (selected) {
-                        setState(() {
-                          _selectedSpec = s;
-                          _selectedTalents.clear();
-                          _pointsRemaining = 31;
-                        });
-                      }
+                      if (selected) _onSpecChanged(s);
                     },
                   ),
                 )),
@@ -203,8 +219,7 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
 
   Widget _buildAbilitiesTab(ThemeData theme) {
     final abilities = sampleAbilities
-        .where((a) => a.classId == _selectedClass?.id)
-        
+        .where((a) => a.classId == _selectedClass.id)
         .where((a) => _searchQuery.isEmpty ||
             a.name.toLowerCase().contains(_searchQuery.toLowerCase()))
         .toList();
@@ -223,32 +238,44 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
           ),
         ),
         Expanded(
-          child: ListView(
-            padding: const EdgeInsets.all(12),
-            children: abilities.map((a) {
-              final selected = _selectedAbilities.contains(a.id);
-              return Card(
-                color: selected
-                    ? _specColor.withValues(alpha: 0.3)
-                    : _cardColor(theme),
-                child: ListTile(
-                  title: Text(a.name,
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text(a.school.name),
-                  trailing: Checkbox(
-                    value: selected,
-                    onChanged: (_) {
-                      setState(() {
-                        selected
-                            ? _selectedAbilities.remove(a.id)
-                            : _selectedAbilities.add(a.id);
-                      });
-                    },
+          child: abilities.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.flash_off, size: 48, color: theme.hintColor),
+                      const SizedBox(height: 12),
+                      Text('No abilities found for ${_selectedClass.displayName}',
+                          style: theme.textTheme.bodyLarge),
+                    ],
                   ),
+                )
+              : ListView(
+                  padding: const EdgeInsets.all(12),
+                  children: abilities.map((a) {
+                    final selected = _selectedAbilities.contains(a.id);
+                    return Card(
+                      color: selected
+                          ? _specColor.withValues(alpha: 0.3)
+                          : _cardColor(theme),
+                      child: ListTile(
+                        title: Text(a.name,
+                            style: const TextStyle(fontWeight: FontWeight.bold)),
+                        subtitle: Text(a.school.name),
+                        trailing: Checkbox(
+                          value: selected,
+                          onChanged: (_) {
+                            setState(() {
+                              selected
+                                  ? _selectedAbilities.remove(a.id)
+                                  : _selectedAbilities.add(a.id);
+                            });
+                          },
+                        ),
+                      ),
+                    ).animate().fadeIn(duration: 200.ms);
+                  }).toList(),
                 ),
-              ).animate().fadeIn(duration: 200.ms);
-            }).toList(),
-          ),
         ),
       ],
     );
@@ -256,8 +283,22 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
 
   Widget _buildTalentsTab(ThemeData theme) {
     final talents = sampleTalents
-        .where((t) => t.classId == _selectedClass?.id && t.specName == _selectedSpec)
+        .where((t) => t.classId == _selectedClass.id && t.specName == _selectedSpec)
         .toList();
+
+    if (talents.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.account_tree_outlined, size: 48, color: theme.hintColor),
+            const SizedBox(height: 12),
+            Text('No talents for ${_selectedClass.displayName} — ${_selectedSpec}',
+                style: theme.textTheme.bodyLarge),
+          ],
+        ),
+      );
+    }
 
     final tiers = <int, List<Talent>>{};
     for (final t in talents) {
@@ -369,47 +410,57 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
             ],
           ),
         ),
-        // Current enchant summary
         _buildEnchantSummary(theme),
         Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.all(8),
-            itemCount: enchants.length,
-            itemBuilder: (context, i) {
-              final e = enchants[i];
-              final tierColor = _tierColor(e.tier);
-              final isSelected = _selectedEnchantSlots['me'] == e.id;
-              return Card(
-                color: isSelected
-                    ? tierColor.withValues(alpha: 0.3)
-                    : _cardColor(theme),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: tierColor.withValues(alpha: 0.3),
-                    child: Icon(Icons.auto_awesome, color: tierColor, size: 18),
+          child: enchants.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.auto_awesome_outlined, size: 48, color: theme.hintColor),
+                      const SizedBox(height: 12),
+                      const Text('No enchants match this filter'),
+                    ],
                   ),
-                  title: Text(e.name,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: tierColor)),
-                  subtitle: Text(e.description,
-                      maxLines: 2, overflow: TextOverflow.ellipsis),
-                  trailing: Icon(
-                    isSelected ? Icons.check_circle : Icons.circle_outlined,
-                    color: isSelected ? tierColor : theme.hintColor,
-                  ),
-                  onTap: () {
-                    setState(() {
-                      if (_selectedEnchantSlots['me'] == e.id) {
-                        _selectedEnchantSlots['me'] = null;
-                      } else {
-                        _selectedEnchantSlots['me'] = e.id;
-                      }
-                    });
+                )
+              : ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: enchants.length,
+                  itemBuilder: (context, i) {
+                    final e = enchants[i];
+                    final tierColor = _tierColor(e.tier);
+                    final isSelected = _selectedEnchantSlots['me'] == e.id;
+                    return Card(
+                      color: isSelected
+                          ? tierColor.withValues(alpha: 0.3)
+                          : _cardColor(theme),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: tierColor.withValues(alpha: 0.3),
+                          child: Icon(Icons.auto_awesome, color: tierColor, size: 18),
+                        ),
+                        title: Text(e.name,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, color: tierColor)),
+                        subtitle: Text(e.description,
+                            maxLines: 2, overflow: TextOverflow.ellipsis),
+                        trailing: Icon(
+                          isSelected ? Icons.check_circle : Icons.circle_outlined,
+                          color: isSelected ? tierColor : theme.hintColor,
+                        ),
+                        onTap: () {
+                          setState(() {
+                            if (_selectedEnchantSlots['me'] == e.id) {
+                              _selectedEnchantSlots['me'] = null;
+                            } else {
+                              _selectedEnchantSlots['me'] = e.id;
+                            }
+                          });
+                        },
+                      ),
+                    ).animate().fadeIn(duration: 200.ms);
                   },
                 ),
-              ).animate().fadeIn(duration: 200.ms);
-            },
-          ),
         ),
       ],
     );
@@ -447,7 +498,7 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
           ],
         ),
       );
-    } catch (e) {
+    } catch (_) {
       return const SizedBox.shrink();
     }
   }
@@ -459,7 +510,7 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceVariant.withValues(alpha: 0.5),
+            color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
             border: Border(bottom: BorderSide(color: theme.dividerColor)),
           ),
           child: Column(
@@ -492,9 +543,13 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
                                   : theme.dividerColor.withValues(alpha: 0.3)),
                         ),
                         child: Text(
-                          item != null ? '${slot.displayName}: ${item.name}' : slot.displayName,
+                          item != null
+                              ? '${slot.displayName}: ${item.name}'
+                              : slot.displayName,
                           style: theme.textTheme.labelSmall?.copyWith(
-                              color: item != null ? item.rarity.color : theme.hintColor,
+                              color: item != null
+                                  ? item.rarity.color
+                                  : theme.hintColor,
                               fontWeight: FontWeight.w600),
                         ),
                       ),
@@ -544,48 +599,59 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
         ),
         // Gear list
         Expanded(
-          child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            children: _filteredGear.map((item) {
-              final equipped = _equippedGear[item.slot] == item;
-              return Card(
-                margin: const EdgeInsets.only(bottom: 6),
-                child: ListTile(
-                  leading: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: item.rarity.color.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Icon(Icons.inventory_2_outlined,
-                        color: item.rarity.color, size: 18),
+          child: _filteredGear.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.inventory_2_outlined, size: 48, color: theme.hintColor),
+                      const SizedBox(height: 12),
+                      const Text('No gear found'),
+                    ],
                   ),
-                  title: Text(item.name,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: item.rarity.color)),
-                  subtitle: Text(
-                      '${item.slot.displayName} • iLvl ${item.itemLevel}'
-                      '${item.source != null ? ' • ${item.source}' : ''}',
-                      maxLines: 1, overflow: TextOverflow.ellipsis),
-                  trailing: Icon(
-                    equipped ? Icons.check_circle : Icons.add_circle_outline,
-                    color: equipped ? item.rarity.color : theme.hintColor,
-                  ),
-                  onTap: () {
-                    setState(() {
-                      if (equipped) {
-                        _equippedGear[item.slot] = null;
-                      } else {
-                        _equippedGear[item.slot] = item;
-                      }
-                    });
-                  },
+                )
+              : ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  children: _filteredGear.map((item) {
+                    final equipped = _equippedGear[item.slot] == item;
+                    return Card(
+                      margin: const EdgeInsets.only(bottom: 6),
+                      child: ListTile(
+                        leading: Container(
+                          width: 36,
+                          height: 36,
+                          decoration: BoxDecoration(
+                            color: item.rarity.color.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Icon(Icons.inventory_2_outlined,
+                              color: item.rarity.color, size: 18),
+                        ),
+                        title: Text(item.name,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: item.rarity.color)),
+                        subtitle: Text(
+                            '${item.slot.displayName} • iLvl ${item.itemLevel}'
+                            '${item.source != null ? ' • ${item.source}' : ''}',
+                            maxLines: 1, overflow: TextOverflow.ellipsis),
+                        trailing: Icon(
+                          equipped ? Icons.check_circle : Icons.add_circle_outline,
+                          color: equipped ? item.rarity.color : theme.hintColor,
+                        ),
+                        onTap: () {
+                          setState(() {
+                            if (equipped) {
+                              _equippedGear[item.slot] = null;
+                            } else {
+                              _equippedGear[item.slot] = item;
+                            }
+                          });
+                        },
+                      ),
+                    ).animate().fadeIn(duration: 150.ms);
+                  }).toList(),
                 ),
-              ).animate().fadeIn(duration: 150.ms);
-            }).toList(),
-          ),
         ),
       ],
     );
@@ -611,7 +677,6 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
   }
 
   Widget _buildStatsTab(ThemeData theme) {
-    // Aggregate gear bonuses
     final gearArmor = _equippedGear.values.fold(0, (sum, g) {
       if (g == null) return sum;
       return sum + ((g.stats['armor'] as num?) ?? 0).toInt();
@@ -624,7 +689,6 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
       if (g == null) return sum;
       return sum + ((g.stats['spellPower'] as num?) ?? 0).toInt();
     });
-    // For crit/haste/resilience, we need to convert from rating or percent
     int gearBonusCrit = 0, gearBonusHaste = 0, gearBonusResilience = 0;
     for (final g in _equippedGear.values) {
       if (g == null) continue;
@@ -633,11 +697,11 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
       gearBonusResilience += ((g.stats['resilience'] as num?) ?? 0).toInt();
     }
 
-    final classStats = defaultClassStats[_selectedClass?.id ?? 'warrior'] ?? const PrimaryStats();
+    final classStats = defaultClassStats[_selectedClass.id] ?? const PrimaryStats();
     final secondary = computeSecondaryStats(
       primary: classStats,
-      classId: _selectedClass?.id ?? 'warrior',
-      raceId: _selectedRace?.id,
+      classId: _selectedClass.id,
+      raceId: _selectedRace.id,
       gearArmor: gearArmor,
       gearBonusAP: gearBonusAP,
       gearBonusSpellPower: gearBonusSpellPower,
@@ -682,11 +746,8 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
         _buildStatHeader('REGENERATION', theme),
         _buildStatRow('Mana / 5s', secondary.manaPer5 > 0 ? secondary.manaPer5.toString() : '0', 'Mana regenerated every 5 seconds.', theme),
         const SizedBox(height: 8),
-        if (_selectedRace != null) ...[
-          _buildStatHeader('RACIAL BONUSES', theme),
-          _buildRaceRacialsWidget(theme),
-          const SizedBox(height: 8),
-        ],
+        _buildStatHeader('RACIAL BONUSES', theme),
+        _buildRaceRacialsWidget(theme),
         const SizedBox(height: 32),
       ],
     );
@@ -710,33 +771,30 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
             children: [
               const Icon(Icons.inventory_2, size: 18),
               const SizedBox(width: 12),
-              Text('${gearItems.length} gear pieces equipped',
+              Text('${gearItems.length} gear piece${gearItems.length != 1 ? 's' : ''} equipped',
                   style: theme.textTheme.titleSmall
                       ?.copyWith(fontWeight: FontWeight.bold)),
             ],
           ),
           const SizedBox(height: 10),
-          Row(
-            children: [
-              ...gearItems.map((g) {
-                return Padding(
-                  padding: const EdgeInsets.only(right: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(g!.name,
-                          style: TextStyle(
-                              color: g.rarity.color,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13)),
-                      Text(g.slot.displayName,
-                          style: theme.textTheme.labelSmall
-                              ?.copyWith(color: theme.hintColor)),
-                    ],
-                  ),
-                );
-              }),
-            ],
+          Wrap(
+            spacing: 16,
+            runSpacing: 8,
+            children: gearItems.map((g) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(g!.name,
+                      style: TextStyle(
+                          color: g.rarity.color,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13)),
+                  Text(g.slot.displayName,
+                      style: theme.textTheme.labelSmall
+                          ?.copyWith(color: theme.hintColor)),
+                ],
+              );
+            }).toList(),
           ),
         ],
       ),
@@ -744,10 +802,9 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
   }
 
   Widget _buildRaceRacialsWidget(ThemeData theme) {
-    final race = _selectedRace!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: race.racialAbilities.map((r) => Padding(
+      children: _selectedRace.racialAbilities.map((r) => Padding(
         padding: const EdgeInsets.only(left: 16, bottom: 4),
         child: Text('• $r', style: theme.textTheme.bodyMedium),
       )).toList(),
@@ -798,15 +855,14 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
   }
 
   void _saveBuild([Build? existing]) {
-    if (_selectedClass == null) return;
     final build = Build(
       id: existing?.id ?? 'build_${DateTime.now().millisecondsSinceEpoch}',
-      name: _isEditing && _buildNameController.text.isNotEmpty
+      name: _buildNameController.text.isNotEmpty
           ? _buildNameController.text
-          : '${_selectedClass!.displayName} $_selectedSpec',
-      classId: _selectedClass!.id,
+          : '${_selectedClass.displayName} $_selectedSpec',
+      classId: _selectedClass.id,
       specName: _selectedSpec,
-      raceId: _selectedRace?.id,
+      raceId: _selectedRace.id,
       abilityIds: _selectedAbilities.toList(),
       talentIds: _selectedTalents.toList(),
       enchantSlots: Map.fromEntries(

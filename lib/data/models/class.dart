@@ -38,6 +38,17 @@ class WarClass {
 
   Color get color => Color(int.parse(colorHex.replaceFirst('#', '0xff')));
 
+  /// Returns the color for each spec for per-spec coloring in talent tree.
+  List<Color> get specColors {
+    final base = color;
+    final alpha = base.withValues(alpha: 0.5);
+    return List.generate(specNames.length, (i) {
+      if (i == 0) return color;
+      if (i == 1) return alpha;
+      return base.withValues(alpha: 0.3);
+    });
+  }
+
   @override
   String toString() => 'WarClass($id: $displayName)';
 
@@ -86,6 +97,6 @@ class WarClass {
 
   static const allWarClasses = all;
 
-  static WarClass? findById(String id) =>
+  static WarClass findById(String id) =>
       all.firstWhere((c) => c.id == id, orElse: () => all.first);
 }

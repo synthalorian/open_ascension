@@ -27,7 +27,7 @@ class Race {
   @override
   String toString() => 'Race($id: $displayName)';
 
-  static Race? findById(String id) =>
+  static Race findById(String id) =>
       allRaces.firstWhere((r) => r.id == id, orElse: () => allRaces.first);
 }
 
