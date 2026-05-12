@@ -43,9 +43,11 @@ The app now has comprehensive talent and lore data. Remaining gaps in depth.
 
 **Current state:** 195 talents across 9 classes × 3 specs. Target: ~300-350 for full WotLK density.
 
-### Abilities — Expand Per Class
+### Abilities — Expand Per Class ~~DONE~~
 
-Current: ~170 abilities but unevenly distributed.
+~~Current: ~170 abilities but unevenly distributed.~~
+
+**266 abilities total now** — added 95 more: Warrior(+14), Paladin(+10), Hunter(+11), Rogue(+12), Priest(+9), DK(+10), Shaman(+8), Mage(+12), Warlock(+9). Now ~25-30 per class.
 
 ### Mystic Enchants — Expand ~~DONE~~
 
@@ -59,12 +61,14 @@ Current: 41 entries across 6 categories. Well-populated but can add more niche c
 
 ## Priority 2: Feature Gaps
 
-### Class Builder — Stats Tab
+### Class Builder — Stats Tab ~~DONE~~
 
-The Stats tab is a placeholder ("Stats tab coming soon..."). Needs:
-- Primary stats: Str, Agi, Sta, Int, Spirit
-- Secondary stats: Crit, Hit, Haste, Armor, etc.
-- Stat-to-value formulas
+~~The Stats tab is a placeholder ("Stats tab coming soon..."). Needs:~~
+~~- Primary stats: Str, Agi, Sta, Int, Spirit~~
+~~- Secondary stats: Crit, Hit, Haste, Armor, etc.~~
+~~- Stat-to-value formulas~~
+
+**Implemented.** Now includes **Gear integration tab** — equip gear from 200-item database, stats reflect armor/AP/spell power/crit bonuses.
 
 ### Mystic Enchant Screen — Selection State ~~DONE~~
 
