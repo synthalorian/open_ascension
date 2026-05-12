@@ -173,8 +173,9 @@ Item database for WotLK:
 
 ### Web Build
 
-- `flutter build web --release`
-- Host on GitHub Pages
+- `flutter build web --release` ✅ Done
+- GitHub Actions workflow auto-deploys to `https://synthalorian.github.io/open_ascension/` on every push to master
+- Settings screen uses clipboard-based export/import (web-compatible, no dart:io or file_picker)
 
 ### Android/iOS
 
