@@ -20,7 +20,7 @@ class _GearBrowserScreenState extends State<GearBrowserScreen> {
   WeaponType? _filterWeaponType;
 
   List<GearItem> get _filtered {
-    var items = sampleGearItems;
+    var items = List<GearItem>.from(sampleGearItems);
     if (_searchQuery.isNotEmpty) {
       final q = _searchQuery.toLowerCase();
       items = items
