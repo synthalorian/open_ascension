@@ -665,7 +665,7 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
   }
 
   List<GearItem> get _filteredGear {
-    var items = sampleGearItems;
+    var items = List<GearItem>.from(sampleGearItems);
     if (_gearSearch != null) {
       final q = _gearSearch!.toLowerCase();
       final matchedIds = items
