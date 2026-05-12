@@ -34,15 +34,24 @@ jobs:
       - name: Build Web
         run: flutter build web --release --base-href /open_ascension/
 
-      - name: Upload APK to Release v0.2.0
-        uses: svenstaro/upload-release-action@v2
+      - name: Upload APK & Update Release
+        uses: softprops/action-gh-release@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          repo_name: synthalorian/open_ascension
-          tag: v0.2.0
-          file: build/app/outputs/flutter-apk/app-release.apk
-          asset_name: open_ascension_v0.2.0.apk
-          overwrite: true
+          files: build/app/outputs/flutter-apk/app-release.apk
+          tag_name: v0.2.0
+          name: "Open Ascension v0.2.0"
+          body: |
+            The classless WoW companion app.
+
+            🌐 **Web App:** https://synthalorian.github.io/open_ascension/
+
+            ## Features
+            - 141 real Mystical Enchants from the official wiki
+            - 266 abilities across 9 classes
+            - 200 gear items (Naxx, Ulduar, ICC, Emblem, PvP, Professions)
+            - Visual talent tree with connecting lines & prereqs
+            - Gear integration with live Stats tab
+            - Build sharing via base64 codes
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
