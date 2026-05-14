@@ -1,206 +1,190 @@
-# Open Ascension — Next Steps
+# Open Ascension — Next Steps (Expanded Scope)
 
-This file tracks what's done and what needs to happen next. Any session should read this first, pick up where we left off, and update completed items.
+**Mission:** Integrate all reference data from [ascension.help](https://ascension.help/) (Worldforged Reference Database) to create the definitive companion app for World of Warcraft: Ascension.
 
 ---
 
 ## Completed ✅
 
 - [x] Flutter project scaffold (Flutter 3.41.9, Riverpod, go_router)
-- [x] Data models with JSON serialization: WarClass (9), Race (11), Ability (170+), Talent (195), MysticEnchant (19 place holders — NEEDS REAL ASCENSION DATA), Build, Realm (6), LoreEntry (41), GearItem (200)
+- [x] Data models with JSON serialization: WarClass (9), Race (11), Ability (170+), Talent (195), MysticEnchant (231), Build, Realm (6), LoreEntry (41), GearItem (200)
 - [x] App navigation (9 routes: home, class, talents/:classId/:spec, enchants, builds, lore, lore/:entryId, settings, gear)
 - [x] Theme system (11 themes: 3 core + 4 synthwave + 4 lore) with SharedPreferences persistence
 - [x] HomeScreen with quick-access cards
 - [x] ClassBuilderScreen with Abilities/Talents/Enchants/Stats tabs
 - [x] TalentTreeScreen with spec tabs, point tracking, tier grouping
 - [x] MysticEnchantScreen with slot tabs, tier colors, detail bottom sheets
-- [x] BuildManagerScreen with save/edit/delete
+- [x] MysticEnchant overhaul — persistent selection, per-slot tracking, point system, summary panel, save-enchant-build
+- [x] Mystic Enchants zone data — Added zone & locationDetails; all 119 legendary enchants mapped. 51 unique zones.
+- [x] BuildManagerScreen with save/edit/delete + tap-to-edit
 - [x] LoreScreen with category tabs and search (41 entries across 6 categories)
 - [x] LoreEntryScreen with related entries navigation
-- [x] SettingsScreen with theme grid selector, data export/import/clear
+- [x] SettingsScreen with theme selector, data export/import/clear, clipboard codes
 - [x] AppDatabase with SharedPreferences persistence for builds
-- [x] **ALL 30 analyzer issues fixed** — zero warnings, zero errors
-- [x] Clean build (Linux desktop binary at build/linux/x64/debug/bundle/open_ascension)
-- [x] **All 195 talents across all 9 classes × 3 specs**
-- [x] **Full Stats tab** with WotLK formulas, per-class default stats, racial bonuses, categorized display
-- [x] Git initialized, 3 commits (initial + talents + lore/stats)
-- [x] README.md written
-- [x] Research data collected from ascension.gg wiki
-- [x] NEXT_STEPS.md roadmap created
-- [x] **Mystic Enchant Screen overhaul** — persistent selection state, per-slot tracking, point system, summary panel, save-enchant-build
-- [x] ~~Mystic Enchants expanded~~ — REVERTED. Fake stat-boost data stripped. Still 19 placeholder enchants. Real Ascension mystical enchant data (ability-modifiers, not stat boosts) needed when wiki is accessible.
-- [x] **Short code import/export** — base64 encoded shareable build codes, single + multi-build export/import with conflict handling
-- [x] **Gear Database** — 200 items (gear_item model with JSON serialization, GearBrowserScreen with search + multi-filter: slot/rarity/type/armor/weapon/source)
-- [x] **Home screen** now shows new "Gear" quick-access card
-- [x] **Mystic Enchants zone data** — Added `zone` and `locationDetails` fields to MysticEnchant model. All 119 legendary enchants now have zone/location data from ascension.help (Worldforged Reference Database). 51 zones mapped across Stratholme, Silithus, Molten Core, Naxxramas, etc.
-- [x] **Mystic Enchant screen overhaul** — Zone filter (PopupMenuButton dropdown with 51 zones), expandable cards showing zone/location details, search now includes zone and location fields, empty-state widgets for filtered results.
+- [x] **All 195 talents across 9 classes × 3 specs** (≈300 nodes including ranks)
+- [x] **Stats tab** with WotLK formulas, per-class defaults, racial bonuses, categorized display
+- [x] **Gear Database** — 200 items, GearBrowserScreen with slot/rarity/type/armor/weapon/source filters
+- [x] **Character import/export** via base64 shareable codes, multi-build support
+- [x] **Realm Browser** (formerly Servers) — list + details for 3 servers
+- [x] **Zero analyzer issues** — clean build, Linux release binary
+- [x] Git initialized, README written, GitHub Actions web deploy
+- [x] **Hermes CLI wrapper** updated — defaults to Nous step-3.5-flash provider, resolves model shorthand, emits proper `openai/<model>` flag.
+- [x] **Ascension.help data discovery**
+  - Extracted Supabase anon key from client JS bundle (read-only, safe for dev)
+  - Enumerated live Supabase endpoints and schemas
+  - Confirmed content-rich tables: `mystic_enchants` (176), `mythic_affixes` (9), `dungeon_routes` (13), `dungeon_route_images` (13), `servers` (3), `feature_flags` (8), `page_content` (1), `feature_suggestions` (1)
+  - Identified empty tables: `weakauras`, `weakaura_suggestions`, `enchant_suggestions`, `enchant_tags`, `item_affix_suggestions`, `weekly_affixes`, `tags`
+  - Mapped navigation routes to tables
+  - Verified Items → `/items/affixes` page uses `item_affix_suggestions` (currently empty)
 
 ---
 
-## Priority 1: Data Completeness
+## Phase 1: Ascension.help Data Pipeline
 
-The app now has comprehensive talent and lore data. Remaining gaps in depth.
+### 1.1 Harvest Script
+- Write `scripts/fetch_ascension_data.py`:
+  - Use anon key to query each table via `count=exact`, paginate through all rows
+  - Save one JSON file per table under `assets/data/` (including empty ones)
+  - Include `meta.json` with fetch timestamp, source version, total counts
+- Commit JSON assets (expected < 1MB total)
 
-### Talents — Deepen Existing Trees
+### 1.2 Dart Models
+- Generate `lib/data/models/ascension/`:
+  - `affix.dart` → `mythic_affixes` fields (`id, name, summary, description, ascension_notes, tips, icon_url, sort_order`)
+  - `dungeon_route.dart` → `dungeon_routes` (`id, name, notes, expansion, difficulty_notes, affix_notes, group_tips, season_label, extra_data`)
+  - `dungeon_route_image.dart` → `dungeon_route_images` (`id, dungeon_id, image_url, caption, sort_order`)
+  - `server.dart` → `servers` (`id, name`) — could replace/extend `Realm`
+  - `feature_flag.dart`, `page_content.dart`, `feature_suggestion.dart`
+  - Stub models: `weakaura.dart`, `weekly_affix.dart`, `enchant_suggestion.dart`, `item_affix_suggestion.dart`, `tag.dart` (empty now)
+- Use `json_serializable`, make immutable, include `copyWith`, equality, toString.
+- Run `build_runner` to regenerate `.g.dart`.
 
-**Current state:** 195 talents across 9 classes × 3 specs. Target: ~300-350 for full WotLK density.
-
-### Abilities — Expand Per Class ~~DONE~~
-
-~~Current: ~170 abilities but unevenly distributed.~~
-
-**266 abilities total now** — added 95 more: Warrior(+14), Paladin(+10), Hunter(+11), Rogue(+12), Priest(+9), DK(+10), Shaman(+8), Mage(+12), Warlock(+9). Now ~25-30 per class.
-
-### Mystic Enchants — Expand ~~DONE~~
-
-~~Current: 19 enchants. Need 40-60 total.~~ → **51 enchants** across 7 slots including Main Hand and Off Hand.
-
-### Lore Entries
-
-Current: 41 entries across 6 categories. Well-populated but can add more niche characters, locations, and Ascension-specific content.
-
----
-
-## Priority 2: Feature Gaps
-
-### Class Builder — Stats Tab ~~DONE~~
-
-~~The Stats tab is a placeholder ("Stats tab coming soon..."). Needs:~~
-~~- Primary stats: Str, Agi, Sta, Int, Spirit~~
-~~- Secondary stats: Crit, Hit, Haste, Armor, etc.~~
-~~- Stat-to-value formulas~~
-
-**Implemented.** Now includes **Gear integration tab** — equip gear from 200-item database, stats reflect armor/AP/spell power/crit bonuses.
-
-### Mystic Enchant Screen — Selection State ~~DONE~~
-
-~~Currently shows detail sheets but no persistent selection. Should:~~
-~~- Track selected enchants per slot~~
-~~- Show selected enchant summary~~
-~~- Allow saving to a build~~
-
-**Implemented** — Per-slot selection, summary panel, point tracking, save build from enchants.
-
-### Gear Database ~~DONE~~
-
-~~Item database for WotLK:~~
-~~- Model: GearItem with id, name, itemLevel, type, stats, set bonus, rarity~~
-~~- 200+ key items (Naxx, OS, Ulduar, ICC)~~
-~~- Browser with filters~~
-
-**Implemented** — 200 GearItems, GearBrowserScreen with search + slot/rarity/type/armor/weapon/source filters.
-
-### Character Import/Export via Short Codes ~~DONE~~
-
-~~- Base64 encode build JSON → shareable codes~~
-~~- Paste code to import~~
-
-**Implemented** — Single/multi-build base64 codes, copy-to-clipboard, import with conflict handling.
-
-### Talent Tree Screen — Visual Layout
-
-Current: Simple list grouped by tier. Could improve:
-- Visual tree layout with connecting lines
-- Prerequisite enforcement
-- Mutually exclusive node handling
-
-### Build Manager — View/Edit Build
-
-Click saved build → loads into Class Builder for editing with pre-populated data.
-
-### Settings Screen — Data Import
-
-Import button shows "Import coming soon". Needs:
-- Pick JSON file, parse, merge builds
-- Show import result (N imported, M conflicts)
+### 1.3 Repository & Providers
+- `lib/data/repository/ascension_repository.dart`:
+  - Loads each JSON from assets on demand, returns `List<T>`
+  - Wrap in Riverpod `FutureProvider` for each collection:
+    - `affixesProvider`, `dungeonRoutesProvider`, `dungeonRouteImagesProvider`, `serversProvider`,
+      `featureFlagsProvider`, `pageContentProvider`, `featureSuggestionsProvider`,
+      `weakaurasProvider`, `weeklyAffixesProvider`, `itemAffixSuggestionsProvider`, `tagsProvider`.
+- Cache results in memory; provide helper lookups (e.g., `getAffixesByCategory` if needed).
 
 ---
 
-## Priority 3: Additional Features
+## Phase 2: UI — Reference Sections
 
-### Realm Browser ~~DONE~~
+### 2.1 Navigation Structure
+- Update `AppRouter` to include new routes under `/affixes`, `/dungeon-routes`, `/weakauras`, `/suggestions`, `/maps`, `/items/affixes` (as Items section), `/classes` (optional).
+- Rearrange drawer:
+  - **Character Builder** → Class, Talents, Enchants, Builds, Gear
+  - **Reference** → Mystic Enchants, Affixes, Dungeon Routes, M+ Upgrades, M+ Affixes, WeakAuras, Items (→ Affix suggestions), Maps, Classes
+  - **Lore** → Lore, Lore Entry
+  - **Settings** → Settings
 
-~~Realm model exists (6 servers). Need UI:~~
-~~- realm_browser_screen.dart~~
-~~- List realms with status, population, PvP flag, ruleset, max level~~
+### 2.2 Unified Reference List Scaffold
+- Create reusable `ReferenceListScreen<T>` scaffold with search, sort, and card list.
+- Each feature extends with specific tile/color scheme.
 
-**Already implemented** — realm_browser_screen.dart with expansion tiles, status indicators, detail cards.
+### 2.3 Affix Browser
+- `features/affixes/affix_list_screen.dart`
+- Grid of cards: icon, name, summary (truncated). Tap → detail.
+- `features/affixes/affix_detail_screen.dart`: full description, ascension_notes, tips.
+- Since table small, simple list.
 
-### Settings Screen — Data Import ~~DONE~~
+### 2.4 Dungeon Route Browser
+- `features/dungeon_routes/dungeon_route_list_screen.dart`: list of routes with icon, name, expansion badge.
+- `features/dungeon_routes/dungeon_route_detail_screen.dart`:
+  - Display name, notes, difficulty_notes, affix_notes, group_tips, season_label.
+  - Horizontal image carousel from `dungeon_route_images` where `dungeon_id` matches.
+  - Maybe a map placeholder later.
 
-~~Import button shows "Import coming soon". Needs:~~
-~~- Pick JSON file, parse, merge builds~~
-~~- Show import result (N imported, M conflicts)~~
+### 2.5 WeakAura Gallery
+- `features/weakauras/weakaura_list_screen.dart`:
+  - If `weakauras` empty → show an empty-state illustration + "No WeakAuras submitted yet" and a button to Suggestions.
+  - Else: list of WA cards: name, author (maybe), description.
+- `features/weakauras/weakaura_detail_screen.dart`: show WA string (copy button + syntax highlighting), install instructions.
 
-**Already implemented** — file_picker integration, importAll, conflict detection.
+### 2.6 Suggestions
+- `features/suggestions/suggestion_list_screen.dart`: read-only list from `feature_suggestions`.
+  - Show title, upvote/downvote counts, status.
+  - Tapping shows details + description.
+- Inline voting not possible without write auth; link to website for contributions.
 
-### Build Manager — View/Edit Build ~~DONE~~
+### 2.7 Maps
+- `features/maps/map_screen.dart`:
+  - If `tags` (map markers) populated → display interactive map (leaflet/flutter_map) with markers.
+  - Empty → placeholder art + text: "Interactive zone maps are coming soon! Check the website to contribute."
 
-**Already implemented** — tap build → ClassBuilderScreen with editBuild pre-populated.
+### 2.8 Items (→ Item Affix Suggestions)
+- `features/items/item_affix_suggestions_screen.dart`:
+  - Mirror of Suggestions but filtered to item affix suggestions (`item_affix_suggestions`).
+  - Group by category (Strength, Agility, etc.) as per the website (observed categories).
+  - Empty state identical to Suggestions.
 
-### Gear Database
+### 2.9 M+ Upgrades & M+ Affixes
+- `features/mplus/mplus_screen.dart`:
+  - Show current weekly affix rotation using `weekly_affixes` (join with `mythic_affixes`).
+  - If `weekly_affixes` empty, fall back to list of all affixes with explanation.
+- Could combine both into one screen with tabs.
 
-Item database for WotLK:
-- Model: GearItem with id, name, itemLevel, type, stats, set bonus, rarity
-- 200+ key items (Naxx, OS, Ulduar, ICC)
-- Browser with filters
+### 2.10 Classes
+- Already have Class Builder. Could keep navigation pointing to existing Class tab; rename as needed.
 
-### Character Import/Export via Short Codes
+### 2.11 Static Pages (Contact, About, Admin)
+- `features/static/webview_screen.dart`:
+  - Use `webview_flutter` to load corresponding routes from the website (e.g., `/contact`).
+  - Simple wrapper.
 
-- Base64 encode build JSON → shareable codes
-- Paste code to import
+### 2.12 Settings → Data Import
+- Already implemented build import/export; no change.
 
 ---
 
-## Priority 4: Polish
+## Phase 3: Polish & Integration
 
-### Icons & Assets
+### 3.1 Home Screen
+- Add new cards for Affixes, Dungeon Routes, WeakAuras, Items (affix suggestions), Suggestions, Maps, M+.
+- Possibly split into two tabs: "Character" vs "Reference".
+- Ensure grid stays 2-column on mobile; scrollable.
 
-- Class icons, race portraits, talent icons
-- Asset paths under assets/images/
+### 3.2 Cross-Linking
+- Affix detail may list enchants that grant that affix (requires linking enchant → affix; not currently in model). Could be future.
+- Dungeon route detail could integrate with affix notes.
+- Weakauras may link to relevant affixes or classes (future).
 
-### Performance
+### 3.3 Offline & Performance
+- All data from assets → instant offline access.
+- Lazy-load image network (dungeon route images) with caching.
 
-- Lazy-load large datasets
-- Profile with DevTools
+### 3.4 Testing
+- Unit tests for each model serialization against sample JSON.
+- Widget tests for each new screen existence and empty states.
+- Integration test: full data load and display counts.
 
-### Testing
+### 3.5 Linting & Analyzer
+- Ensure zero warnings & errors (`flutter analyze`).
 
-- Unit tests for model serialization round-trips
-- Widget tests for each screen
-
----
-
-## Priority 5: Distribution
-
-### Web Build
-
-- `flutter build web --release` ✅ Done
-- GitHub Actions workflow auto-deploys to `https://synthalorian.github.io/open_ascension/` on every push to master
-- Settings screen uses clipboard-based export/import (web-compatible, no dart:io or file_picker)
-
-### Android/iOS
-
-- Requires Android SDK / macOS
+### 3.6 Icons
+- Add icons for Affix, Dungeon, WA, etc. using material icons or custom assets later.
 
 ---
 
-## Technical Debt
+## Phase 4: Distribution
 
-### Dart 3.11.5 Enum Bug
+Same as before (web, Android/iOS).
 
-`AppThemeMode`, `EnchantSlot`, `EnchantTier` use class/static-const pattern due to Dart 3.11.5 compiler regression. Migrate when Dart is updated past this.
+---
 
-### Session Handoff
+## Tech Debt
 
-1. Read this file first
-2. `cd /home/synth/projects/open_ascension`
-3. `export PATH="/home/synth/projects/flutter/bin:$PATH"`
-4. `flutter pub get`
-5. `flutter analyze` — verify zero errors
-6. `flutter run` — verify app launches
-7. Pick a priority item and get to work
-8. Update this file and commit when done
+- **Dart 3.11.5 enum regression** — keep using class-based enums until fixed.
+- **Hermes wrapper** — maintain openai prefix logic for remote providers.
+- **Data freshness** — implement a manual "Refresh data" option in Settings to re-run fetch script; currently manual process.
 
-**Local path:** /home/synth/projects/open_ascension
-**Binary:** /home/synth/projects/open_ascension/build/linux/x64/debug/bundle/open_ascension
+---
+
+## Session Handoff
+
+1. `cd /home/synth/projects/open_ascension`
+2. `flutter pub get`
+3. `flutter analyze` — verify 0 errors
+4. Pick a task above, implement, update this file, commit & push.

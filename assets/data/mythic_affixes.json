@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ecef3825-aa99-41cf-8b50-a82768047aea",
+    "name": "Corpse Explosion (Mythic 10+)",
+    "summary": "Slain enemies explode and apply a Nature damage debuff.",
+    "description": "When non-boss enemies are slain, they explode, dealing a percentage of their maximum health as Nature damage, split between all nearby players.\n\nThe explosion drenches players in Corpse Juice, causing Nature damage every second for 6 seconds.",
+    "ascension_notes": "Corpse Juice is a secondary damage-over-time effect applied by the explosion.",
+    "tips": "Avoid stacking tightly when enemies are about to die. Be mindful of health during large trash pulls.",
+    "icon_url": null,
+    "created_at": "2025-12-26T17:30:44.876114+00:00",
+    "updated_at": "2026-01-01T13:42:24.324559+00:00",
+    "sort_order": 6
+  },
+  {
+    "id": "9c85f051-ac85-4d28-ae8b-d6cee8f78c96",
+    "name": "Pack Tactics (Mythic 7+)",
+    "summary": "Player damage is affected by proximity to allies.",
+    "description": "Players gain a stack of Pack Hunter for each nearby ally and a stack of Lone Hunter for each distant ally. Each missing nearby ally reduces damage done by 6%, up to a maximum of 20%.",
+    "ascension_notes": "This is a player-only affix and does not affect enemies.",
+    "tips": "Stay grouped whenever possible. Avoid unnecessary spreading unless mechanics require it.",
+    "icon_url": null,
+    "created_at": "2025-12-26T17:30:44.876114+00:00",
+    "updated_at": "2026-01-01T13:42:24.318494+00:00",
+    "sort_order": 4
+  },
+  {
+    "id": "e66f7bce-4c07-40e5-b4db-762a4202806f",
+    "name": "Fortified (Mythic 2+)",
+    "summary": "Non-boss enemies have increased health and damage.",
+    "description": "While Fortified is active, all non-boss enemies have their maximum health increased by 10% and deal 10% increased damage. This significantly increases the difficulty of trash pulls and places higher pressure on tanks and healers.",
+    "ascension_notes": "Applies only to non-boss enemies. Boss encounters are unaffected by this affix.",
+    "tips": "Focus on controlled pulls. Crowd control and interrupts are more valuable due to increased enemy survivability and damage output.",
+    "icon_url": null,
+    "created_at": "2025-12-26T17:30:44.876114+00:00",
+    "updated_at": "2026-01-01T13:42:24.319116+00:00",
+    "sort_order": 1
+  },
+  {
+    "id": "9fa7882b-c2b0-471b-a5a3-5c5cf4f71fba",
+    "name": "Titanic Power: Glacial (Mythic 14+)",
+    "summary": "Enemies gain powerful Frost-based Titan abilities.",
+    "description": "Titan-empowered enemies gain Glacial abilities:\n\nFrostbite: Frost spells and abilities chill the target, reducing movement speed. Reaching 10 stacks stuns the target. Being close to allies reduces Frostbite stacks.\n\nChains of Ice: The champion forms icy chains around a player, locking them in place.\n\nIce Barrage: Bombards a target player and nearby allies with icicles, each dealing Frost damage.\n\nFrozen Orb: The champion releases a Frozen Orb that moves around, pulsing Frost damage and shooting frostbolts in random directions.\n\nAbsolute Zero: The Frost champion absorbs all heat and rapidly reduces the temperature, dealing Frost damage to all players.",
+    "ascension_notes": "Glacial abilities emphasize movement control, positioning, and group coordination to reduce Frostbite effects.",
+    "tips": "Stay near allies to manage Frostbite stacks. Watch for rooting effects and moving orbs, and be ready to reposition quickly during temperature drop phases.",
+    "icon_url": null,
+    "created_at": "2026-01-01T13:38:19.38009+00:00",
+    "updated_at": "2026-01-01T13:42:24.316939+00:00",
+    "sort_order": 7
+  },
+  {
+    "id": "1e596c8a-a0ce-441c-abde-672f185db119",
+    "name": "Necrotic (Mythic 4+)",
+    "summary": "Enemy attacks apply a stacking healing reduction to tanks.",
+    "description": "All enemies' melee and ranged attacks apply a stack of Necrosis to their target. Necrosis inflicts Shadow damage every second and reduces healing received. This effect only applies to tanks and can stack up to 50 times.\n\nNecrosis is removed when the affected player's health drops below 35% or when they leave combat.",
+    "ascension_notes": "Includes the Necrosis debuff, which persists aggressively until health thresholds or combat drops are met.",
+    "tips": "Tanks should kite to drop stacks. Healers should anticipate reduced healing effectiveness and coordinate cooldowns.",
+    "icon_url": null,
+    "created_at": "2025-12-26T17:30:44.876114+00:00",
+    "updated_at": "2026-01-01T13:42:24.319288+00:00",
+    "sort_order": 2
+  },
+  {
+    "id": "8fb8ba39-c6a9-40e3-9f91-5629518178f8",
+    "name": "Sanguine (Mythic 10+)",
+    "summary": "Slain enemies leave behind pools that heal allies and damage players.",
+    "description": "When enemies are slain, they leave behind a lingering pool of ichor on the ground. This pool heals enemy allies standing within it and deals damage to players who remain inside.\n\nThe damage and healing effects increase with the keystone level.",
+    "ascension_notes": "Sanguine pools persist briefly after an enemy's death and can overlap if multiple enemies die close together.",
+    "tips": "Avoid killing enemies on top of each other. Tanks should reposition enemies before they die, and players should move out of pools immediately.",
+    "icon_url": null,
+    "created_at": "2026-01-01T13:38:19.38009+00:00",
+    "updated_at": "2026-01-01T13:42:24.325138+00:00",
+    "sort_order": 5
+  },
+  {
+    "id": "22cf5ae6-021f-4fb6-bd70-d2e21531abb4",
+    "name": "Tyrannical (Mythic 2+)",
+    "summary": "Bosses have increased health and deal increased damage.",
+    "description": "While Tyrannical is active, all bosses have their maximum health increased by 15% and deal 5% increased damage. This increases the difficulty and duration of boss encounters and places higher pressure on healers and proper mechanic execution.",
+    "ascension_notes": "Only affects boss enemies. Non-boss enemies are not impacted.",
+    "tips": "Plan defensive and healing cooldowns around boss abilities. Expect longer fights and higher sustained damage.",
+    "icon_url": null,
+    "created_at": "2026-01-01T13:38:19.38009+00:00",
+    "updated_at": "2026-01-01T13:42:24.313493+00:00",
+    "sort_order": 0
+  },
+  {
+    "id": "572d328a-4508-4997-98ff-00a7fbcaf2d0",
+    "name": "Killer Bees (Mythic 7+)",
+    "summary": "Combat attracts aggressive swarms of Killer Bees throughout the dungeon.",
+    "description": "Furious Killer Bees have infested the dungeon. The sounds of combat attract nearby Killer Bees, causing them to swarm and defend their hive.\n\nMoving players become highly attractive targets for Killer Bees, greatly increasing the number of bees that join combat.\n\nThere is a chance that when a Killer Bee Queen is slain, all nearby Killer Bees will retreat.",
+    "ascension_notes": "Killer Bees take 75% reduced area damage, making AoE far less effective. Their attacks are unavoidable.",
+    "tips": "Limit unnecessary movement to avoid pulling additional bees. Focus single-target damage and prioritize killing Bee Queens to trigger bee retreats.",
+    "icon_url": null,
+    "created_at": "2026-01-01T13:38:19.38009+00:00",
+    "updated_at": "2026-01-01T13:42:24.315829+00:00",
+    "sort_order": 3
+  },
+  {
+    "id": "62146dbc-06f8-47a2-87b4-685aa7d911e5",
+    "name": "Titanic Power: Infernal (Mythic 14+)",
+    "summary": "Enemies gain powerful Infernal Titan abilities.",
+    "description": "<p>Titan-empowered enemies gain multiple Infernal abilities:</p>\n<ul>\n<li><strong>Ignite:</strong> Fire abilities ignite enemies, dealing additional Fire damage over time.</li>\n<li><strong>Meltdown:</strong> Periodic Fire damage pulses around the champion, increasing in frequency over time.</li>\n<li><strong>Flame Torrent:</strong> A cone of Fire damage unleashed in front of the champion.</li>\n<li><strong>Magma Infusion:</strong> Melee attacks deal additional Fire damage to enemies in front of the champion.</li>\n<li><strong>Fire from the Skies:</strong> Meteors rain down, dealing Fire damage and leaving burning ground effects.</li>\n</ul>",
+    "ascension_notes": "These abilities scale with encounter duration and enemy uptime.",
+    "tips": "Watch for frontal attacks and ground effects. Movement and positioning are mandatory, not optional.",
+    "icon_url": null,
+    "created_at": "2025-12-26T17:30:44.876114+00:00",
+    "updated_at": "2026-01-01T13:42:24.339176+00:00",
+    "sort_order": 8
+  }
+]

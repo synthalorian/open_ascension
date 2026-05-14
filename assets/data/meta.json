@@ -1,0 +1,65 @@
+{
+  "tables": {
+    "mystic_enchants": {
+      "count": 176,
+      "path": "mystic_enchants.json"
+    },
+    "mythic_affixes": {
+      "count": 9,
+      "path": "mythic_affixes.json"
+    },
+    "dungeon_routes": {
+      "count": 13,
+      "path": "dungeon_routes.json"
+    },
+    "dungeon_route_images": {
+      "count": 13,
+      "path": "dungeon_route_images.json"
+    },
+    "servers": {
+      "count": 3,
+      "path": "servers.json"
+    },
+    "feature_flags": {
+      "count": 8,
+      "path": "feature_flags.json"
+    },
+    "page_content": {
+      "count": 1,
+      "path": "page_content.json"
+    },
+    "feature_suggestions": {
+      "count": 1,
+      "path": "feature_suggestions.json"
+    },
+    "weakauras": {
+      "count": 0,
+      "path": "weakauras.json"
+    },
+    "weakaura_suggestions": {
+      "count": 0,
+      "path": "weakaura_suggestions.json"
+    },
+    "enchant_suggestions": {
+      "count": 0,
+      "path": "enchant_suggestions.json"
+    },
+    "enchant_tags": {
+      "count": 0,
+      "path": "enchant_tags.json"
+    },
+    "item_affix_suggestions": {
+      "count": 0,
+      "path": "item_affix_suggestions.json"
+    },
+    "weekly_affixes": {
+      "count": 0,
+      "path": "weekly_affixes.json"
+    },
+    "tags": {
+      "count": 0,
+      "path": "tags.json"
+    }
+  },
+  "fetched_at": "2026-05-14T13:10:03.281660Z"
+}
