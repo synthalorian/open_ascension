@@ -32,6 +32,8 @@ This file tracks what's done and what needs to happen next. Any session should r
 - [x] **Short code import/export** — base64 encoded shareable build codes, single + multi-build export/import with conflict handling
 - [x] **Gear Database** — 200 items (gear_item model with JSON serialization, GearBrowserScreen with search + multi-filter: slot/rarity/type/armor/weapon/source)
 - [x] **Home screen** now shows new "Gear" quick-access card
+- [x] **Mystic Enchants zone data** — Added `zone` and `locationDetails` fields to MysticEnchant model. All 119 legendary enchants now have zone/location data from ascension.help (Worldforged Reference Database). 51 zones mapped across Stratholme, Silithus, Molten Core, Naxxramas, etc.
+- [x] **Mystic Enchant screen overhaul** — Zone filter (PopupMenuButton dropdown with 51 zones), expandable cards showing zone/location details, search now includes zone and location fields, empty-state widgets for filtered results.
 
 ---
 

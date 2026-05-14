@@ -14,13 +14,27 @@ class _MysticEnchantScreenState extends State<MysticEnchantScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   String _searchQuery = '';
+  String? _selectedZone;
   final Set<String> _selectedEnchantIds = {};
   late final List<EnchantTier> _tiers = EnchantTier.values;
+
+  // Collect all unique zones from legendary enchants
+  late final List<String> _zones;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: _tiers.length, vsync: this);
+    // Extract unique zones from sampleEnchants, sorted by count (most common first)
+    final zoneCounts = <String, int>{};
+    for (final e in sampleEnchants) {
+      if (e.zone != null && e.zone!.isNotEmpty) {
+        zoneCounts[e.zone!] = (zoneCounts[e.zone!] ?? 0) + 1;
+      }
+    }
+    final zoneEntries = zoneCounts.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+    _zones = zoneEntries.map((e) => e.key).toList();
   }
 
   @override
@@ -34,10 +48,17 @@ class _MysticEnchantScreenState extends State<MysticEnchantScreen>
   List<MysticEnchant> _filteredEnchants(EnchantTier tier) {
     return sampleEnchants.where((e) {
       if (e.tier != tier) return false;
-      if (_searchQuery.isEmpty) return true;
-      final q = _searchQuery.toLowerCase();
-      return e.name.toLowerCase().contains(q) ||
-          e.description.toLowerCase().contains(q);
+      if (_searchQuery.isNotEmpty) {
+        final q = _searchQuery.toLowerCase();
+        if (!e.name.toLowerCase().contains(q) &&
+            !e.description.toLowerCase().contains(q) &&
+            !(e.zone?.toLowerCase().contains(q) ?? false) &&
+            !(e.locationDetails?.toLowerCase().contains(q) ?? false)) {
+          return false;
+        }
+      }
+      if (_selectedZone != null && e.zone != _selectedZone) return false;
+      return true;
     }).toList()..sort((a, b) => a.name.compareTo(b.name));
   }
 
@@ -68,15 +89,34 @@ class _MysticEnchantScreenState extends State<MysticEnchantScreen>
       body: Column(
         children: [
           _buildSearchBar(context),
+          _buildZoneFilterBar(context),
           if (_totalSelected > 0) _buildSelectionSummary(context),
           Expanded(
             child: TabBarView(
               controller: _tabController,
               children: EnchantTier.values.map((tier) {
                 final enchants = _filteredEnchants(tier);
-        return ListView.builder(
-          padding: const EdgeInsets.all(12),
-          itemCount: enchants.length,
+                if (enchants.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.search_off, size: 64, color: theme.colorScheme.primary),
+                        const SizedBox(height: 16),
+                        Text(
+                          _searchQuery.isNotEmpty || _selectedZone != null
+                            ? 'No enchants match your filters'
+                            : 'No ${tier.displayName.toLowerCase()} enchants available',
+                          style: theme.textTheme.titleMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  padding: const EdgeInsets.all(12),
+                  itemCount: enchants.length,
                   itemBuilder: (context, i) {
                     final e = enchants[i];
                     final isSelected = _selectedEnchantIds.contains(e.id);
@@ -106,12 +146,39 @@ class _MysticEnchantScreenState extends State<MysticEnchantScreen>
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       child: TextField(
         decoration: const InputDecoration(
-          hintText: 'Search mystical enchants...',
+          hintText: 'Search by name, zone, or description...',
           prefixIcon: Icon(Icons.search),
           border: OutlineInputBorder(),
           contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 12),
         ),
         onChanged: (v) => setState(() => _searchQuery = v),
+      ),
+    );
+  }
+
+  Widget _buildZoneFilterBar(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+      child: Row(
+        children: [
+          const Text('Zone:', style: TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(width: 8),
+          Expanded(
+            child: PopupMenuButton<String>(
+              icon: Chip(
+                label: Text(_selectedZone ?? 'All Zones', maxLines: 1, overflow: TextOverflow.ellipsis),
+                avatar: Icon(_selectedZone == null ? Icons.public : Icons.place, size: 16),
+                visualDensity: VisualDensity.compact,
+              ),
+              onSelected: (v) => setState(() => _selectedZone = v == 'All' ? null : v),
+              itemBuilder: (ctx) => [
+                const PopupMenuItem(value: 'All', child: Text('All Zones')),
+                const PopupMenuDivider(),
+                ..._zones.map((z) => PopupMenuItem<String>(value: z, child: Text(z))),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -203,7 +270,7 @@ class SelectionCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       color: isSelected ? c.withValues(alpha: 0.2) : null,
-      child: ListTile(
+      child: ExpansionTile(
         leading: CircleAvatar(
           backgroundColor: c.withValues(alpha: 0.3),
           child: Icon(Icons.auto_awesome, color: c, size: 18),
@@ -211,11 +278,42 @@ class SelectionCard extends StatelessWidget {
         title: Text(enchant.name,
             style: TextStyle(fontWeight: FontWeight.bold, color: c)),
         subtitle: Text(enchant.description,
-            maxLines: 3, overflow: TextOverflow.ellipsis,
+            maxLines: 2, overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.bodySmall),
         trailing: Icon(isSelected ? Icons.check_circle : Icons.circle_outlined,
             color: isSelected ? c : theme.hintColor),
-        onTap: onToggle,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (enchant.zone != null)
+                  Row(
+                    children: [
+                      Icon(Icons.public, size: 16, color: theme.hintColor),
+                      const SizedBox(width: 6),
+                      Text('Zone: ${enchant.zone}',
+                          style: theme.textTheme.bodySmall),
+                    ],
+                  ),
+                if (enchant.locationDetails != null) ...[
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(Icons.location_on, size: 14, color: theme.hintColor),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(enchant.locationDetails!,
+                            style: theme.textTheme.bodySmall),
+                      ),
+                    ],
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
