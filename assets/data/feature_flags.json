@@ -1,0 +1,66 @@
+[
+  {
+    "id": "0d349920-d4fe-4cf7-a916-a7724b1644ed",
+    "flag_key": "page_mystic_enchants",
+    "enabled": true,
+    "description": "Show Mystic Enchants page in navigation",
+    "created_at": "2025-12-25T19:35:15.347562+00:00",
+    "updated_at": "2025-12-25T19:35:15.347562+00:00"
+  },
+  {
+    "id": "36a61fcc-de05-4b45-b682-9d0a7fdcbb21",
+    "flag_key": "page_maps",
+    "enabled": false,
+    "description": "Show Maps page in navigation",
+    "created_at": "2025-12-25T19:35:15.347562+00:00",
+    "updated_at": "2025-12-25T19:35:15.347562+00:00"
+  },
+  {
+    "id": "1319f5a1-2554-450b-8428-f082bbe7ef41",
+    "flag_key": "page_classes",
+    "enabled": false,
+    "description": "Show Classes page in navigation",
+    "created_at": "2025-12-25T19:35:15.347562+00:00",
+    "updated_at": "2025-12-25T19:35:15.347562+00:00"
+  },
+  {
+    "id": "7abf7358-d471-465e-a11f-7f83bb47b24f",
+    "flag_key": "page_builds",
+    "enabled": false,
+    "description": "Show Builds page in navigation",
+    "created_at": "2025-12-25T19:35:15.347562+00:00",
+    "updated_at": "2025-12-26T03:07:36.587589+00:00"
+  },
+  {
+    "id": "a43593dd-5cc1-4be5-9495-0f91fefed99b",
+    "flag_key": "page_mythic_upgrades",
+    "enabled": true,
+    "description": "Show M+ Upgrades page in navigation",
+    "created_at": "2025-12-26T12:57:12.990281+00:00",
+    "updated_at": "2025-12-26T12:57:12.990281+00:00"
+  },
+  {
+    "id": "c31ee2fc-3ea7-4452-bfb5-e8deeb515c6e",
+    "flag_key": "page_dungeon_routes",
+    "enabled": true,
+    "description": "Show Dungeon Routes page in navigation",
+    "created_at": "2025-12-26T13:13:56.474861+00:00",
+    "updated_at": "2025-12-26T13:13:56.474861+00:00"
+  },
+  {
+    "id": "1f834e0d-ca0e-4268-837a-1f1c0c25ac1e",
+    "flag_key": "page_items",
+    "enabled": true,
+    "description": "Controls visibility of the Items section in navigation",
+    "created_at": "2026-02-28T17:05:20.192671+00:00",
+    "updated_at": "2026-02-28T23:30:38.85668+00:00"
+  },
+  {
+    "id": "6c34925b-0c10-4a6c-b599-37a7a5d8ded6",
+    "flag_key": "page_weakauras",
+    "enabled": true,
+    "description": "WeakAuras library page - browse and copy WA import strings by category",
+    "created_at": "2026-03-07T14:45:45.183099+00:00",
+    "updated_at": "2026-03-07T15:09:51.258913+00:00"
+  }
+]
