@@ -12,6 +12,8 @@ MysticEnchant _$MysticEnchantFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       description: json['description'] as String,
       tier: $enumDecode(_$EnchantTierEnumMap, json['tier']),
+      zone: json['zone'] as String?,
+      locationDetails: json['locationDetails'] as String?,
     );
 
 Map<String, dynamic> _$MysticEnchantToJson(MysticEnchant instance) =>
@@ -20,6 +22,8 @@ Map<String, dynamic> _$MysticEnchantToJson(MysticEnchant instance) =>
       'name': instance.name,
       'description': instance.description,
       'tier': _$EnchantTierEnumMap[instance.tier]!,
+      'zone': instance.zone,
+      'locationDetails': instance.locationDetails,
     };
 
 const _$EnchantTierEnumMap = {
