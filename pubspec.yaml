@@ -1,8 +1,8 @@
 name: open_ascension
-description: "The ultimate Project Ascension WoW companion app"
+description: "The ultimate Project Ascension WoW companion app — classless character builder, mystic enchant database, M+ reference tools"
 publish_to: 'none'
 
-version: 0.2.0+3
+version: 0.3.0+4
 
 environment:
   sdk: ^3.11.5
@@ -55,4 +55,7 @@ flutter:
     - assets/images/enchants/
     - assets/images/lore/
     - assets/images/races/
+    - assets/images/dungeons/
+    - assets/images/icons/
+    - assets/images/map/
     - assets/data/

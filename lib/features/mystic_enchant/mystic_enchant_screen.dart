@@ -291,10 +291,23 @@ class SelectionCard extends StatelessWidget {
                 if (enchant.zone != null)
                   Row(
                     children: [
-                      Icon(Icons.public, size: 16, color: theme.hintColor),
-                      const SizedBox(width: 6),
-                      Text('Zone: ${enchant.zone}',
-                          style: theme.textTheme.bodySmall),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: c.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: c.withValues(alpha: 0.2)),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.public, size: 12, color: c),
+                            const SizedBox(width: 4),
+                            Text(enchant.zone!,
+                                style: TextStyle(fontSize: 11, color: c)),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 if (enchant.locationDetails != null) ...[

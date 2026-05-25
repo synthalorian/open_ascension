@@ -175,19 +175,95 @@ class _ClassBuilderScreenState extends ConsumerState<ClassBuilderScreen>
           Row(
             children: [
               const Text('Class: ', style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(width: 4),
+              Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.3)),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Image.asset(
+                    'assets/images/classes/${_selectedClass.id}.jpg',
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Icon(Icons.person, size: 16, color: _specColor),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
               DropdownButton<WarClass>(
                 value: _selectedClass,
                 items: WarClass.all
-                    .map((c) => DropdownMenuItem(value: c, child: Text(c.displayName)))
+                    .map((c) => DropdownMenuItem(
+                          value: c,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 22,
+                                height: 22,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(4),
+                                  child: Image.asset(
+                                    'assets/images/classes/${c.id}.jpg',
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (_, __, ___) => const Icon(Icons.person, size: 14),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(c.displayName),
+                            ],
+                          ),
+                        ))
                     .toList(),
                 onChanged: _onClassChanged,
               ),
               const SizedBox(width: 16),
               const Text('Race: ', style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(width: 4),
+              Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.3)),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Image.asset(
+                    'assets/images/races/${_selectedRace.id.replaceAll('_', '')}.jpg',
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const Icon(Icons.people, size: 16),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
               DropdownButton<Race>(
                 value: _selectedRace,
                 items: allRaces
-                    .map((r) => DropdownMenuItem(value: r, child: Text(r.displayName)))
+                    .map((r) => DropdownMenuItem(
+                          value: r,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 22,
+                                height: 22,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(4),
+                                  child: Image.asset(
+                                    'assets/images/races/${r.id.replaceAll('_', '')}.jpg',
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (_, __, ___) => const Icon(Icons.people, size: 14),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(r.displayName),
+                            ],
+                          ),
+                        ))
                     .toList(),
                 onChanged: _onRaceChanged,
               ),

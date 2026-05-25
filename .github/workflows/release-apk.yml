@@ -38,20 +38,49 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: build/app/outputs/flutter-apk/app-release.apk
-          tag_name: v0.2.0
-          name: "Open Ascension v0.2.0"
+          tag_name: v0.3.0
+          name: "Open Ascension v0.3.0"
           body: |
-            The classless WoW companion app.
+            The ultimate Project Ascension WoW companion app.
 
             🌐 **Web App:** https://synthalorian.github.io/open_ascension/
 
-            ## Features
-            - 141 real Mystical Enchants from the official wiki
+            ## 🔥 What's New in v0.3.0
+
+            ### 🗺️ Enchant Zone Map
+            - Browse **65 zones** across Eastern Kingdoms, Kalimdor, Outlands + Dungeons
+            - Color-coded density indicators for enchant hotspots
+            - Tap any zone to see which enchants drop there
+
+            ### 🖼️ Images Everywhere
+            - **13 dungeon route maps** — downloaded from live supabase CDN
+            - **Class & Race icons** — real WoW icon art from the CDN
+            - Pinch-to-zoom fullscreen on dungeon route images
+
+            ### 🏷️ Item Affix Browser
+            - **56 crafting affixes** across 8 stat categories (Strength, Agility, Intellect, Stamina, Spirit, Attack Power, Spell Power, Tanking)
+            - Expandable accordion UI with full stats
+
+            ### 📊 M+ Upgrade Cost Table
+            - Complete schedule: Purchase through Mythic 40
+            - 8 equipment slot columns with Totals row
+            - Costs in Emblems of Triumph
+
+            ### 🎨 Visual Polish
+            - Zone badges on mystic enchant cards
+            - Class/race icons in the class builder
+            - Smoother animations throughout
+            - Android label now shows "Open Ascension"
+
+            ### ⚔️ Core Features
+            - 176+ mystic enchants with zone/location data
             - 266 abilities across 9 classes
             - 200 gear items (Naxx, Ulduar, ICC, Emblem, PvP, Professions)
             - Visual talent tree with connecting lines & prereqs
-            - Gear integration with live Stats tab
             - Build sharing via base64 codes
+            - 9 M+ affixes with full mechanics
+            - 13 dungeon routes with strategy notes
+            - 42 lore entries, 11 custom themes, and more
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

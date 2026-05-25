@@ -14,8 +14,10 @@ import '../models/ascension/enchant_suggestion.dart';
 import '../models/ascension/enchant_tag.dart';
 import '../models/ascension/item_affix_suggestion.dart';
 import '../models/ascension/weekly_affix.dart';
+import '../models/ascension/item_affix.dart';
+import '../models/ascension/mplus_upgrade.dart';
 import '../models/ascension/tag.dart';
-import '../mystic_enchant.dart';
+import '../models/mystic_enchant.dart';
 
 /// Base helper to load and parse a JSON asset into a list of [T].
 Future<List<T>> _loadJsonAsset<T>({
@@ -41,7 +43,7 @@ final ascensionEnchantsProvider =
   // Since the existing MysticEnchant class is generated differently,
   // we will return the static list for now.
   await Future.delayed(Duration.zero); // keep async
-  return MysticEnchant.entries;
+  return sampleEnchants;
 });
 
 /// Affixes (mythic_affixes)
@@ -158,5 +160,23 @@ final tagsProvider = FutureProvider.autoDispose<List<Tag>>((ref) {
   return _loadJsonAsset(
     assetPath: 'assets/data/tags.json',
     fromJson: (json) => Tag.fromJson(json),
+  );
+});
+
+/// Item affixes (categories and their affixes)
+final itemAffixesProvider =
+    FutureProvider.autoDispose<List<ItemAffixCategory>>((ref) {
+  return _loadJsonAsset(
+    assetPath: 'assets/data/item_affixes.json',
+    fromJson: (json) => ItemAffixCategory.fromJson(json),
+  );
+});
+
+/// M+ upgrade costs
+final mplusUpgradesProvider =
+    FutureProvider.autoDispose<List<MplusUpgrade>>((ref) {
+  return _loadJsonAsset(
+    assetPath: 'assets/data/mplus_upgrades.json',
+    fromJson: (json) => MplusUpgrade.fromJson(json),
   );
 });

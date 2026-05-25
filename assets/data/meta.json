@@ -4,6 +4,14 @@
       "count": 176,
       "path": "mystic_enchants.json"
     },
+    "item_affixes": {
+      "count": 56,
+      "path": "item_affixes.json"
+    },
+    "mplus_upgrades": {
+      "count": 42,
+      "path": "mplus_upgrades.json"
+    },
     "mythic_affixes": {
       "count": 9,
       "path": "mythic_affixes.json"
@@ -61,5 +69,5 @@
       "path": "tags.json"
     }
   },
-  "fetched_at": "2026-05-14T13:10:03.281660Z"
+  "fetched_at": "2026-05-15T04:04:18.953497Z"
 }

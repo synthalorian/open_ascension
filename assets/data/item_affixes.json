@@ -1,0 +1,114 @@
+[
+  {
+    "id": "strength",
+    "name": "Strength",
+    "affix_count": 9,
+    "affixes": [
+      {"name": "of Strength", "stats": "+7 Strength"},
+      {"name": "of Swift Might", "stats": "+5 Strength, +4 Haste Rating"},
+      {"name": "of Precise Might", "stats": "+5 Strength, +4 Hit Rating"},
+      {"name": "of Expert Strikes", "stats": "+5 Strength, +4 Expertise Rating"},
+      {"name": "of Champion's Spirit", "stats": "+5 Strength, +6 Spirit"},
+      {"name": "of the Bear", "stats": "+5 Strength, +5 Stamina"},
+      {"name": "of the Champion", "stats": "+5 Strength, +6 Attack Power"},
+      {"name": "of Critical Might", "stats": "+5 Strength, +4 Critical Strike Rating"},
+      {"name": "of Rending", "stats": "+5 Strength, +4 Armor Penetration Rating"}
+    ]
+  },
+  {
+    "id": "agility",
+    "name": "Agility",
+    "affix_count": 10,
+    "affixes": [
+      {"name": "of Agility", "stats": "+8 Agility"},
+      {"name": "of the Monkey", "stats": "+5 Agility, +4–5 Stamina"},
+      {"name": "of the Beast", "stats": "+5 Agility, +6 Attack Power"},
+      {"name": "of Accurate Strikes", "stats": "+5 Agility, +4 Hit Rating"},
+      {"name": "of Expert Strikes", "stats": "+5 Agility, +4 Expertise Rating"},
+      {"name": "of Swift Strikes", "stats": "+5 Agility, +4 Haste Rating"},
+      {"name": "of Sharp Strikes", "stats": "+5 Agility, +4 Critical Strike Rating"},
+      {"name": "of the Tiger", "stats": "+5 Agility, +5 Strength"},
+      {"name": "of Rending", "stats": "+5 Agility, +4 Armor Penetration Rating"},
+      {"name": "of the Wolf", "stats": "+5 Agility, +6 Spirit"}
+    ]
+  },
+  {
+    "id": "intellect",
+    "name": "Intellect",
+    "affix_count": 6,
+    "affixes": [
+      {"name": "of Intellect", "stats": "+9 Intellect"},
+      {"name": "of the Eagle", "stats": "+6 Intellect, +5 Stamina"},
+      {"name": "of the Owl", "stats": "+6 Intellect, +6 Spirit"},
+      {"name": "of the Seer", "stats": "+6 Intellect, +4 Hit Rating"},
+      {"name": "of the Piercing Mind", "stats": "+6 Intellect, +6 Spell Penetration"},
+      {"name": "of Prophecy", "stats": "+6 Intellect, +6 Spell Power"}
+    ]
+  },
+  {
+    "id": "stamina",
+    "name": "Stamina",
+    "affix_count": 8,
+    "affixes": [
+      {"name": "of Stamina", "stats": "+9 Stamina"},
+      {"name": "of Vital Regeneration", "stats": "+6 Stamina (secondary stat may be bugged)"},
+      {"name": "of the Unyielding", "stats": "+6 Stamina, +4 Critical Strike Rating"},
+      {"name": "of Regeneration", "stats": "+6 Stamina, +3 Mana per 5 sec"},
+      {"name": "of the Steadfast", "stats": "+6 Stamina, +4 Hit Rating"},
+      {"name": "of Quick Defense", "stats": "+6 Stamina, +4 Haste Rating"},
+      {"name": "of Vital Force", "stats": "+6 Stamina, +6 Spell Penetration"},
+      {"name": "of the Whale", "stats": "+6 Stamina, +5 Spirit"}
+    ]
+  },
+  {
+    "id": "spirit",
+    "name": "Spirit",
+    "affix_count": 6,
+    "affixes": [
+      {"name": "of Spirit", "stats": "+10 Spirit"},
+      {"name": "of the Diligent", "stats": "+6 Spirit, +4 Hit Rating"},
+      {"name": "of Renewal", "stats": "+6 Spirit, +3 Health per 5 sec"},
+      {"name": "of the Hearth", "stats": "+6 Spirit, +7 Spell Healing"},
+      {"name": "of the Soulweaver", "stats": "+6 Spirit, +6 Spell Power"},
+      {"name": "of Nature's Grace", "stats": "+5 Spirit, +4 Stamina, +5 Spell Healing"}
+    ]
+  },
+  {
+    "id": "attack_power",
+    "name": "Attack Power",
+    "affix_count": 4,
+    "affixes": [
+      {"name": "of the Deathblow", "stats": "+6 Attack Power, +4 Haste Rating"},
+      {"name": "of the Ravager", "stats": "+6 Attack Power, +4 Armor Penetration Rating"},
+      {"name": "of Swift Power", "stats": "+6 Attack Power, +4 Expertise Rating"},
+      {"name": "of Expert Power", "stats": "+6 Attack Power, +4 Hit Rating"}
+    ]
+  },
+  {
+    "id": "spell_power",
+    "name": "Spell Power / Spell Damage",
+    "affix_count": 8,
+    "affixes": [
+      {"name": "of Spell Power", "stats": "+10 Spell Power"},
+      {"name": "of Swift Spells", "stats": "+6 Spell Power, +4 Haste Rating"},
+      {"name": "of Magical Fortitude", "stats": "+6 Spell Power, +6 Stamina"},
+      {"name": "of Arcane Precision", "stats": "+6 Spell Power, +4 Hit Rating"},
+      {"name": "of Battle Magic", "stats": "+7 Spell Damage, +6 Stamina"},
+      {"name": "of the Spirit", "stats": "+7 Spell Damage, +6 Spirit"},
+      {"name": "of Vital Healing", "stats": "+7 Spell Healing, +6 Stamina"},
+      {"name": "of Arcane Dominance", "stats": "+6 Spell Power, +4 Critical Strike Rating"}
+    ]
+  },
+  {
+    "id": "tanking",
+    "name": "Tanking",
+    "affix_count": 5,
+    "affixes": [
+      {"name": "of Blocking", "stats": "+8 Block Rating, +6 Stamina"},
+      {"name": "of Dodging", "stats": "+6 Dodge Rating, +6 Stamina"},
+      {"name": "of Defense", "stats": "+7 Defense Rating, +6 Stamina"},
+      {"name": "of Parrying", "stats": "+6 Parry Rating, +6 Stamina"},
+      {"name": "of Protection", "stats": "+8 Shield Block Value, +6 Stamina"}
+    ]
+  }
+]
