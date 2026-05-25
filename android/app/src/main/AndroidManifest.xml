@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="open_ascension"
+        android:label="Open Ascension"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

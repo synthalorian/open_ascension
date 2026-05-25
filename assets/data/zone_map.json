@@ -1,0 +1,576 @@
+{
+  "eastern_kingdoms": [
+    {
+      "zone": "Stranglethorn",
+      "enchants": [
+        "Charged Tides",
+        "Mongoose Fury",
+        "Nesingwary's Big",
+        "Poison Nova",
+        "Zulian Guardian",
+        "Gurubashi Berserker",
+        "Cryotherapist"
+      ],
+      "count": 7
+    },
+    {
+      "zone": "Scarlet Monastery",
+      "enchants": [
+        "Arcanist's Explosion",
+        "Fiery Bash",
+        "Herod's Legacy",
+        "Interrogator's Immolation",
+        "Silence in the Library",
+        "Veil of Shadows"
+      ],
+      "count": 6
+    },
+    {
+      "zone": "Stratholme",
+      "enchants": [
+        "Carrion Swarm",
+        "Flesh Hook",
+        "Hour Of Judgement",
+        "Maggot Trap",
+        "Venom Belch"
+      ],
+      "count": 5
+    },
+    {
+      "zone": "Shadowfang Keep",
+      "enchants": [
+        "Arugal's Blink",
+        "Ghostly Blow",
+        "Piercing Cleaver",
+        "Disciple of Arugal"
+      ],
+      "count": 4
+    },
+    {
+      "zone": "Swamp of Sorrows",
+      "enchants": [
+        "Atal'Ai Totem",
+        "Emerald Visage",
+        "Hazardous Escape",
+        "Shadow Charge"
+      ],
+      "count": 4
+    },
+    {
+      "zone": "Western Plaguelands",
+      "enchants": [
+        "Cleric's Light",
+        "Divine Intervention",
+        "Holy Hammer Nova",
+        "Steward of Eternity"
+      ],
+      "count": 4
+    },
+    {
+      "zone": "Eastern Plaguelands",
+      "enchants": [
+        "Exorcist's Slash",
+        "Shadowfall",
+        "Dark Ranger",
+        "Disease Cloud"
+      ],
+      "count": 4
+    },
+    {
+      "zone": "Arathi",
+      "enchants": [
+        "Spot Weakness",
+        "Stormgarde",
+        "Abjurer's Ward: Arcane",
+        "Quick Draw"
+      ],
+      "count": 4
+    },
+    {
+      "zone": "Blasted Lands",
+      "enchants": [
+        "Aftershock",
+        "Consumed By Shadows",
+        "Bloodmage's Beast Shot"
+      ],
+      "count": 3
+    },
+    {
+      "zone": "Alterac",
+      "enchants": [
+        "Arngrim's Greeting",
+        "Doppelganger",
+        "Ol' Bloodsurge"
+      ],
+      "count": 3
+    },
+    {
+      "zone": "Scholomance",
+      "enchants": [
+        "Bone Spear",
+        "Shadow Dagger",
+        "Darkmaster"
+      ],
+      "count": 3
+    },
+    {
+      "zone": "Wetlands",
+      "enchants": [
+        "Ebbing Tides",
+        "Shieldsmasher",
+        "Dragon Warrior"
+      ],
+      "count": 3
+    },
+    {
+      "zone": "Hinterlands",
+      "enchants": [
+        "You're A Solid Crate",
+        "Blood for the Blood God",
+        "Steel Wind"
+      ],
+      "count": 3
+    },
+    {
+      "zone": "Burning Steppes",
+      "enchants": [
+        "Absolute Hellfire",
+        "Dark Apotheosis"
+      ],
+      "count": 2
+    },
+    {
+      "zone": "Searing Gorge",
+      "enchants": [
+        "Bundle of Shurikens",
+        "Explosive Entrance"
+      ],
+      "count": 2
+    },
+    {
+      "zone": "Badlands",
+      "enchants": [
+        "Fingers of Stone",
+        "Hellish Pursuit"
+      ],
+      "count": 2
+    },
+    {
+      "zone": "Hillsbrad",
+      "enchants": [
+        "Syndicate Sniper Shot",
+        "Warden of Demonreach"
+      ],
+      "count": 2
+    },
+    {
+      "zone": "Silverpine Forest",
+      "enchants": [
+        "Curse of Arugal"
+      ],
+      "count": 1
+    },
+    {
+      "zone": "Plaguelands",
+      "enchants": [
+        "Vampire Lord"
+      ],
+      "count": 1
+    },
+    {
+      "zone": "Ghostlands",
+      "enchants": [
+        "Zandalari Windreaver"
+      ],
+      "count": 1
+    },
+    {
+      "zone": "Duskwood",
+      "enchants": [
+        "Bone Arrow"
+      ],
+      "count": 1
+    },
+    {
+      "zone": "Eversong Woods",
+      "enchants": [
+        "Hammerstorm"
+      ],
+      "count": 1
+    },
+    {
+      "zone": "Stranglethorn Vale",
+      "enchants": [
+        "Hoplite"
+      ],
+      "count": 1
+    }
+  ],
+  "kalimdor": [
+    {
+      "zone": "Winterspring",
+      "enchants": [
+        "Banshee's Wail",
+        "Creeping Frost",
+        "Glacial Light",
+        "Hoarfrost",
+        "Frostfall",
+        "Megafrost",
+        "Screams of the Past",
+        "Totemic Shatter",
+        "Winterfall Firebreath",
+        "Absolute Zero"
+      ],
+      "count": 10
+    },
+    {
+      "zone": "Un'Goro",
+      "enchants": [
+        "Arcane Charge",
+        "Abjurer's Ward: Fire",
+        "Downpour",
+        "Fiery Charge",
+        "Frosty Charge",
+        "Growing Earth",
+        "Oil Dipped Arrows"
+      ],
+      "count": 7
+    },
+    {
+      "zone": "Feralas",
+      "enchants": [
+        "Arcane Arrows",
+        "Dreadnaught",
+        "Faerie Blink",
+        "Nature's Flow",
+        "Hydricles"
+      ],
+      "count": 5
+    },
+    {
+      "zone": "Felwood",
+      "enchants": [
+        "Corrupted Shiv",
+        "Jadefire Corruption",
+        "Vampiric Bite",
+        "Circle of Life",
+        "Grove Ranger"
+      ],
+      "count": 5
+    },
+    {
+      "zone": "Tanaris",
+      "enchants": [
+        "Devastating Pound",
+        "Shadow Waste Bolt",
+        "Shocking Rush",
+        "Time Bomb",
+        "Temporal Rift"
+      ],
+      "count": 5
+    },
+    {
+      "zone": "Azshara",
+      "enchants": [
+        "Abjurer's Ward: Frost",
+        "The Shattering",
+        "Righteous Abjuration",
+        "Storm Of Swords"
+      ],
+      "count": 4
+    },
+    {
+      "zone": "Moonglade",
+      "enchants": [
+        "Feral Quake",
+        "Lunar Aspiration",
+        "Power of Omens",
+        "Symbiotic Serendipity"
+      ],
+      "count": 4
+    },
+    {
+      "zone": "Ashenvale",
+      "enchants": [
+        "Feral Shadow Charge",
+        "Hydra's Sting",
+        "Hell Scream"
+      ],
+      "count": 3
+    },
+    {
+      "zone": "Barrens",
+      "enchants": [
+        "Fire And Fury",
+        "Mechanical Arm",
+        "Edge of Fury"
+      ],
+      "count": 3
+    },
+    {
+      "zone": "Stonetalon",
+      "enchants": [
+        "Raging Momentum",
+        "Shrouded In Shrapnel",
+        "Lightning Cloud"
+      ],
+      "count": 3
+    },
+    {
+      "zone": "Thousand Needles",
+      "enchants": [
+        "Chasin' The Rush",
+        "Ironsand"
+      ],
+      "count": 2
+    },
+    {
+      "zone": "Silithus",
+      "enchants": [
+        "Deadly Follow-Up",
+        "Defense of Thundarian"
+      ],
+      "count": 2
+    },
+    {
+      "zone": "Desolace",
+      "enchants": [
+        "Desolate Wind Bolt",
+        "Rushed Judgement"
+      ],
+      "count": 2
+    },
+    {
+      "zone": "Dustwallow Marsh",
+      "enchants": [
+        "Curse Of The Swamp Witch",
+        "Primal Tide"
+      ],
+      "count": 2
+    },
+    {
+      "zone": "Darkshore",
+      "enchants": [
+        "Leap Of The Old Gods"
+      ],
+      "count": 1
+    }
+  ],
+  "outlands": [
+    {
+      "zone": "Netherstorm",
+      "enchants": [
+        "Ethereal Echostrike",
+        "Project: L.T.C",
+        "Legacy of the Arcanist",
+        "Dawn of the Second Day"
+      ],
+      "count": 4
+    },
+    {
+      "zone": "Nagrand",
+      "enchants": [
+        "Ambush Predator",
+        "Tidewaters"
+      ],
+      "count": 2
+    },
+    {
+      "zone": "Terokkar",
+      "enchants": [
+        "Ebon Dawn",
+        "Ursoc's Rage"
+      ],
+      "count": 2
+    },
+    {
+      "zone": "Blade's Edge",
+      "enchants": [
+        "Oracle of the Eclipse",
+        "Son of Gruul"
+      ],
+      "count": 2
+    },
+    {
+      "zone": "Zangarmarsh",
+      "enchants": [
+        "Thermal Void",
+        "Verdant Convergence"
+      ],
+      "count": 2
+    },
+    {
+      "zone": "Hellfire Peninsula",
+      "enchants": [
+        "Fel Corruption",
+        "Fel Shock"
+      ],
+      "count": 2
+    },
+    {
+      "zone": "Shadowmoon",
+      "enchants": [
+        "Wave Of Despair"
+      ],
+      "count": 1
+    }
+  ],
+  "other": [
+    {
+      "zone": "Razorfen Downs",
+      "enchants": [
+        "Bone Toss",
+        "Shadow Word: Gore",
+        "Spiderbite",
+        "Rotting Breath"
+      ],
+      "count": 4
+    },
+    {
+      "zone": "Ragefire Chasm",
+      "enchants": [
+        "Earthborer Acid",
+        "Flameburst",
+        "Ragefire Cleave",
+        "Ragefire Nova"
+      ],
+      "count": 4
+    },
+    {
+      "zone": "Wailing Caverns",
+      "enchants": [
+        "Devour Mind",
+        "Dual Innervation",
+        "Serpent Form"
+      ],
+      "count": 3
+    },
+    {
+      "zone": "Azeroth",
+      "enchants": [
+        "Elemental Equilibrium",
+        "Shieldwall Soldier",
+        "Arcane Thunder Seer"
+      ],
+      "count": 3
+    },
+    {
+      "zone": "Blackfathom Deeps",
+      "enchants": [
+        "Hydra's Venom",
+        "Twilight Shock",
+        "Water Geyser"
+      ],
+      "count": 3
+    },
+    {
+      "zone": "Blackrock Depths",
+      "enchants": [
+        "Mayhem",
+        "Party Recuperation",
+        "Shield Of The Emperor"
+      ],
+      "count": 3
+    },
+    {
+      "zone": "Molten Core",
+      "enchants": [
+        "Fiery Heroic Leap",
+        "Firefall"
+      ],
+      "count": 2
+    },
+    {
+      "zone": "Deadmines",
+      "enchants": [
+        "Saber Slash",
+        "Defias Gunslinger"
+      ],
+      "count": 2
+    },
+    {
+      "zone": "Shattrath",
+      "enchants": [
+        "Crusader's Judgement"
+      ],
+      "count": 1
+    },
+    {
+      "zone": "Gnomeregan",
+      "enchants": [
+        "Dark Iron Land Mine"
+      ],
+      "count": 1
+    },
+    {
+      "zone": "Bloodmyst (west)",
+      "enchants": [
+        "Dark Justicar"
+      ],
+      "count": 1
+    },
+    {
+      "zone": "Dire Maul East",
+      "enchants": [
+        "Dark Domination"
+      ],
+      "count": 1
+    },
+    {
+      "zone": "Stockades",
+      "enchants": [
+        "Knifestorm"
+      ],
+      "count": 1
+    },
+    {
+      "zone": "Maraudon Falls",
+      "enchants": [
+        "Poison Rain"
+      ],
+      "count": 1
+    },
+    {
+      "zone": "Maraudon Orange",
+      "enchants": [
+        "Razorlash"
+      ],
+      "count": 1
+    },
+    {
+      "zone": "Zul'Farrak",
+      "enchants": [
+        "Troll Sweat"
+      ],
+      "count": 1
+    },
+    {
+      "zone": "Stormwind",
+      "enchants": [
+        "Wraith"
+      ],
+      "count": 1
+    },
+    {
+      "zone": "Unknown",
+      "enchants": [
+        "Swashbuckler: Bloodsail"
+      ],
+      "count": 1
+    },
+    {
+      "zone": "Uldaman",
+      "enchants": [
+        "Lei Shen's Legacy"
+      ],
+      "count": 1
+    },
+    {
+      "zone": "Dire Maul West",
+      "enchants": [
+        "Void Zone"
+      ],
+      "count": 1
+    }
+  ]
+}
