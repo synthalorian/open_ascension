@@ -184,7 +184,7 @@ Same as before (web, Android/iOS).
 
 ## Session Handoff
 
-1. `cd /home/synthalorian 🎹🤺/projects/open_ascension`
+1. `cd /home/synth/projects/open_ascension`
 2. `flutter pub get`
 3. `flutter analyze` — verify 0 errors
 4. Pick a task above, implement, update this file, commit & push.
