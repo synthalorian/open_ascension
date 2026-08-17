@@ -284,3 +284,10 @@ MIT License — see [LICENSE](LICENSE) for details.
   <a href="https://ascension.help/">ascension.help</a> — Worldforged Reference Database<br/>
   <em>"Classless WoW, companion included"</em>
 </p>
+---
+
+## ☕ Support the Developer
+
+If this project saved you time, solved a problem, or just made your day a little more neon, you can fuel the next one:
+
+[![Buy Me A Coffee](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](https://buymeacoffee.com/synthalorian)
