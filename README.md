@@ -1,3 +1,5 @@
+![open_ascension](.github/preview.png)
+
 <p align="center">
   <img src="assets/images/openascension.png" alt="Open Ascension" width="256" height="256" />
 </p>
