@@ -83,7 +83,7 @@ jobs:
             - 42 lore entries, 11 custom themes, and more
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: build/web
 
