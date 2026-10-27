@@ -35,7 +35,7 @@ jobs:
         run: flutter build web --release --base-href /open_ascension/
 
       - name: Upload APK & Update Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: build/app/outputs/flutter-apk/app-release.apk
           tag_name: v0.3.0
